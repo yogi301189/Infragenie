@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Code, Server, Settings, Github, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
-import { Container } from "../components/ui/container";
+import { Container } from "./components/ui/container";
 
 
 /**
