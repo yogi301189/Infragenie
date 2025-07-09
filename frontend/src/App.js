@@ -6,7 +6,9 @@ function App() {
   return (
     <>
       <LandingPage />
-      <PromptForm />
+      <section id="prompt" className="bg-slate-900 py-24 px-4">
+        <PromptForm />
+      </section>
     </>
   );
 }
