@@ -157,6 +157,30 @@ export default function LandingPage() {
           <Button size="lg" className="text-lg px-8 py-6">Get Started Now</Button>
         </Container>
       </section>
+{/* Testimonials */}
+<section className="py-20 bg-slate-800 border-t border-slate-700 text-center">
+  <Container>
+    <motion.h2
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      viewport={{ once: true }}
+      className="text-3xl md:text-4xl font-bold mb-10 text-white"
+    >
+      Loved by 100+ DevOps Engineers
+    </motion.h2>
+    <motion.blockquote
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+      viewport={{ once: true }}
+      className="max-w-3xl mx-auto text-lg text-slate-300 italic"
+    >
+      “InfraGenie saves me hours every deployment. Just type the intent and it does the heavy lifting.”
+      <footer className="mt-4 text-sm not-italic text-slate-400">— Priya K, Senior SRE @ TechNova</footer>
+    </motion.blockquote>
+  </Container>
+</section>
 
       {/* Footer */}
       <footer className="border-t border-slate-700 py-8 bg-slate-900 text-slate-400 text-center text-sm">
