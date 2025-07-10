@@ -10,12 +10,16 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fontsource/inter": "^5.2.6",
+    "autoprefixer": "^10.x",
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.1",
     "lucide-react": "^0.525.0",
+    "postcss": "^8.x",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-scripts": "^5.0.1"
+    "react-scripts": "^5.0.1",
+    "tailwindcss": "^3.x"
   },
   "description": "",
   "browserslist": {
@@ -29,5 +33,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.5.10",
+    "tailwind-scrollbar": "^3.1.0",
+    "tailwindcss-animate": "^1.0.7"
   }
 }
