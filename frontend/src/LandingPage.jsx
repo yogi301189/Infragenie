@@ -4,6 +4,7 @@ import { Card, CardContent } from "./components/ui/card";
 import { Copy } from "lucide-react";
 import { motion } from "framer-motion";
 import { Container } from "./components/ui/container";
+import { Link, animateScroll as scroll } from "react-scroll";
 
 export default function LandingPage() {
   return (
@@ -11,16 +12,44 @@ export default function LandingPage() {
       {/* Header */}
       <header className="sticky top-0 z-30 backdrop-blur supports-[backdrop-filter]:bg-slate-900/70 border-b border-slate-800">
         <Container className="flex items-center justify-between py-4">
-          <a href="#hero" className="flex items-center gap-2 text-lg font-semibold">
+          <button
+            onClick={() => scroll.scrollToTop()}
+            className="flex items-center gap-2 text-lg font-semibold cursor-pointer"
+          >
             <img src="/logo.svg" alt="logo" className="h-8 w-8" /> Infragenie
-          </a>
+          </button>
           <nav className="hidden md:flex items-center gap-6 text-slate-300">
-            <a href="#features" className="hover:text-white transition">Features</a>
-            <a href="/docs" className="hover:text-white transition">Docs</a>
-            <a href="https://github.com/yogi301189/infragenie" target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:text-white transition">GitHub</a>
+            <Link
+              to="features"
+              smooth={true}
+              duration={500}
+              offset={-60}
+              className="hover:text-white transition cursor-pointer"
+            >
+              Features
+            </Link>
+            <a href="/docs" className="hover:text-white transition">
+              Docs
+            </a>
+            <a
+              href="https://github.com/yogi301189/infragenie"
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-1 hover:text-white transition"
+            >
+              GitHub
+            </a>
           </nav>
           <Button asChild className="ml-4 hidden md:inline-flex">
-            <a href="#get-started" className="gap-2">Try it Now</a>
+            <Link
+              to="get-started"
+              smooth={true}
+              duration={500}
+              offset={-60}
+              className="gap-2 cursor-pointer"
+            >
+              Try it Now
+            </Link>
           </Button>
         </Container>
       </header>
@@ -52,8 +81,26 @@ export default function LandingPage() {
               Infragenie turns natural language prompts into production-grade Kubernetes, Terraform & Docker code.
             </motion.p>
             <div className="flex flex-wrap gap-4">
-              <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">Try the Demo</Button>
-              <Button variant="outline" className="border-slate-600 text-white">See in Action</Button>
+              <Link
+                to="get-started"
+                smooth={true}
+                duration={500}
+                offset={-60}
+                className="cursor-pointer"
+              >
+                <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">
+                  Try the Demo
+                </Button>
+              </Link>
+              <a
+                href="https://github.com/yogi301189/infragenie"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Button variant="outline" className="border-slate-600 text-white">
+                  See in Action
+                </Button>
+              </a>
             </div>
           </div>
 
@@ -86,6 +133,17 @@ export default function LandingPage() {
               </div>
             </Card>
           </motion.div>
+        </Container>
+      </section>
+
+      {/* Features Section */}
+      <section id="features" className="py-24 md:py-32">
+        <Container>
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
+            Why Choose Infragenie?
+          </h2>
+          {/* Feature cards go here */}
+          {/* You can loop and add animations like your earlier version */}
         </Container>
       </section>
 
