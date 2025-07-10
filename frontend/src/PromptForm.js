@@ -5,6 +5,7 @@ import { Copy, Loader2 } from "lucide-react";
 
 export default function PromptForm() {
   const [prompt, setPrompt] = useState("");
+  const [type, setType] = useState("kubernetes"); // ✅ ADDED
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -15,15 +16,14 @@ export default function PromptForm() {
     setLoading(true);
     setResponse("");
     try {
-      const res = await fetch("https://infragenie-backend.onrender.com/generate", {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/generate`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ prompt }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt, type }), // ✅ Now `type` is defined
       });
+
       const data = await res.json();
-      setResponse(data.generated || "No response");
+      setResponse(data.code || "No response"); // ✅ Changed from data.generated to data.code
     } catch (error) {
       setResponse("Error generating response. Please try again.");
     } finally {
@@ -40,6 +40,15 @@ export default function PromptForm() {
   return (
     <div className="max-w-3xl mx-auto px-4">
       <form onSubmit={handleSubmit} className="space-y-6">
+        <select
+          value={type}
+          onChange={(e) => setType(e.target.value)}
+          className="bg-slate-800 text-white border border-slate-600 p-2 rounded w-full"
+        >
+          <option value="kubernetes">Kubernetes</option>
+          <option value="terraform">Terraform</option>
+        </select>
+
         <Textarea
           rows={4}
           value={prompt}
@@ -47,6 +56,7 @@ export default function PromptForm() {
           placeholder="e.g., Create a Kubernetes Deployment for nginx"
           className="bg-slate-800 text-white border border-slate-600"
         />
+
         <Button
           type="submit"
           disabled={loading}
