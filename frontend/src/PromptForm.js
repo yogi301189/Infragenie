@@ -7,12 +7,13 @@ import { motion } from "framer-motion";
 export default function PromptForm() {
   const [prompt, setPrompt] = useState("");
   const [result, setResult] = useState("");
+  const [type, setType] = useState("kubernetes");
 
   const handleSubmit = async (e) => {
   e.preventDefault();
 
   try {
-    const res = await fetch("https://infragenie-backend.onrender.com/generate", {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/generate`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -47,6 +48,14 @@ export default function PromptForm() {
             Enter a prompt like: “Create an NGINX Deployment with 3 replicas”
           </CardHeader>
           <CardContent>
+        <select
+  className="w-full mt-2 p-2 bg-slate-900 text-white border border-slate-700 rounded"
+  value={type}
+  onChange={(e) => setType(e.target.value)}
+>
+  <option value="kubernetes">Kubernetes</option>
+  <option value="terraform">Terraform</option>
+</select>
             <Input
               type="text"
               value={prompt}
