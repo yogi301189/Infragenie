@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { Container } from "./components/ui/container";
 import { Link, animateScroll as scroll } from "react-scroll";
 import WhyChoose from "./components/WhyChoose";
+import AwsCard from "./components/AwsCard";
 
 export default function LandingPage() {
   return (
@@ -111,28 +112,13 @@ export default function LandingPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
           >
-            <Card className="bg-[#0f0f1a] border border-slate-700 p-5 rounded-xl shadow-xl">
-              <div className="flex items-center gap-3 mb-4">
-                <img src="/icons/aws-icon.svg" alt="aws" className="h-6 w-6" />
-                <p className="text-white font-medium">Create an S3 bucket</p>
-              </div>
-              <div className="flex gap-6 mb-2 text-sm border-b border-slate-700 pb-1">
-                <span className="text-indigo-400 border-b-2 border-indigo-400">Commands</span>
-                <span className="text-slate-500">Explanation</span>
-                <span className="text-slate-500">Logs</span>
-              </div>
-              <CardContent className="bg-[#161622] text-slate-300 text-sm font-mono p-4 rounded-md relative">
-                aws s3api create-bucket --bucket my-bucket --region us-east-1
-                <button className="absolute top-3 right-3 text-slate-400 hover:text-white">
-                  <Copy size={16} />
-                </button>
-              </CardContent>
-              <div className="flex justify-center gap-4 mt-6">
-                <img src="/icons/k8s.svg" className="h-6" alt="k8s" />
-                <img src="/icons/docker.svg" className="h-6" alt="docker" />
-                <img src="/icons/azure.svg" className="h-6" alt="azure" />
-              </div>
-            </Card>
+           <AwsCard
+              prompt="Create an S3 bucket"
+              command="aws s3api create-bucket --bucket my-bucket --region us-east-1"
+              explanation="This AWS CLI command creates a bucket named 'my-bucket' in the us-east-1 region."
+              logs="Bucket creation successful at 12:34 PM UTC."
+           />
+
           </motion.div>
         </Container>
       </section>
