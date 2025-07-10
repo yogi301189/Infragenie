@@ -5,6 +5,7 @@ import { Copy } from "lucide-react";
 import { motion } from "framer-motion";
 import { Container } from "./components/ui/container";
 import { Link, animateScroll as scroll } from "react-scroll";
+import WhyChoose from "./components/WhyChoose";
 
 export default function LandingPage() {
   return (
@@ -144,6 +145,7 @@ export default function LandingPage() {
           </h2>
           {/* Feature cards go here */}
           {/* You can loop and add animations like your earlier version */}
+         <WhyChoose />
         </Container>
       </section>
 
@@ -186,6 +188,7 @@ export default function LandingPage() {
       <footer className="border-t border-slate-700 py-8 bg-slate-900 text-slate-400 text-center text-sm">
         <Container>
           <p>© {new Date().getFullYear()} Infragenie. All rights reserved.</p>
+
         </Container>
       </footer>
     </div>
