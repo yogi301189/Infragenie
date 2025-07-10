@@ -27,41 +27,43 @@ export default function LandingPage() {
 
       {/* Hero Section */}
       <section id="hero" className="flex-1 py-24 md:py-32">
-        <Container className="grid md:grid-cols-2 gap-10 items-center">
+        <Container className="grid md:grid-cols-2 gap-12 items-center">
           {/* Left */}
-          <div className="space-y-6">
+          <div className="space-y-6 max-w-xl">
             <motion.h1
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="text-4xl md:text-5xl font-extrabold"
+              className="text-4xl md:text-5xl font-extrabold leading-tight"
             >
-              Your AI-Powered <br />
-              <span className="bg-gradient-to-r from-indigo-400 to-purple-500 text-transparent bg-clip-text">
-                DevOps Toolkit
+              Ship Infrastructure
+              <br />
+              <span className="bg-gradient-to-r from-emerald-400 to-purple-500 text-transparent bg-clip-text">
+                10× Faster
               </span>
+              <br /> with AI
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="text-slate-400 max-w-lg"
+              className="text-slate-400"
             >
-              Automate, troubleshoot, and optimize your cloud workflows with a single prompt.
+              Infragenie turns natural language prompts into production-grade Kubernetes, Terraform & Docker code.
             </motion.p>
             <div className="flex flex-wrap gap-4">
-              <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">Try it Now</Button>
+              <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">Try the Demo</Button>
               <Button variant="outline" className="border-slate-600 text-white">See in Action</Button>
             </div>
           </div>
 
-          {/* Right */}
+          {/* Right - Code Preview */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
           >
-            <Card className="bg-[#0f0f1a] border border-slate-700 p-4">
+            <Card className="bg-[#0f0f1a] border border-slate-700 p-5 rounded-xl shadow-xl">
               <div className="flex items-center gap-3 mb-4">
                 <img src="/icons/aws-icon.svg" alt="aws" className="h-6 w-6" />
                 <p className="text-white font-medium">Create an S3 bucket</p>
