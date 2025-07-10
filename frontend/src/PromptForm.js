@@ -9,22 +9,25 @@ export default function PromptForm() {
   const [result, setResult] = useState("");
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    // Call your backend here
-    try {
-      await fetch("https://infragenie-backend.onrender.com/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt }),
-      });
+  try {
+    const res = await fetch("https://infragenie-backend.onrender.com/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        prompt,
+        type: "kubernetes", // or "terraform" — make this selectable if needed
+      }),
+    });
 
-      const data = await res.json();
-      setResult(data.output || "No result returned.");
-    } catch (err) {
-      setResult("Error connecting to InfraGenie backend.");
-    }
-  };
+    const data = await res.json();
+    setResult(data.code || "No code generated.");
+  } catch (err) {
+    console.error(err);
+    setResult("Error connecting to InfraGenie backend.");
+  }
+};
 
   return (
     <motion.div
