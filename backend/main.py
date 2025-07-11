@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
-from openai_utils import generate_k8s_yaml, generate_terraform_code, generate_aws_command
+from openai_utils import generate_k8s_yaml, generate_terraform_code, generate_aws_command, generate_dockerfile_code
 
 app = FastAPI()
 @app.get("/")
@@ -27,6 +27,8 @@ def generate_code(request: CodeRequest):
         output = generate_k8s_yaml(request.prompt)
     elif request.type == "terraform":
         output = generate_terraform_code(request.prompt)
+    elif request.type == "dockerfile":
+        output = generate_dockerfile_code(request.prompt)
     else:
         raise HTTPException(status_code=400, detail="Invalid type")
     
