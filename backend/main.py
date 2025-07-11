@@ -4,7 +4,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from openai_utils import generate_k8s_yaml, generate_terraform_code, generate_aws_command
 
 app = FastAPI()
-
+@app.get("/")
+async def root():
+    return {"message": "InfraGenie backend is live"}
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
