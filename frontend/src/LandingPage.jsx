@@ -7,6 +7,7 @@ import { Container } from "./components/ui/container";
 import { Link, animateScroll as scroll } from "react-scroll";
 import WhyChoose from "./components/WhyChoose";
 import AwsCard from "./components/AwsCard";
+import PromptForm from "./PromptForm";
 
 export default function LandingPage() {
   return (
@@ -122,6 +123,12 @@ export default function LandingPage() {
           </motion.div>
         </Container>
       </section>
+{/* Prompt Form Section */}
+<section id="prompt" className="py-16 md:py-24 bg-[#0f0f1a] border-y border-slate-800">
+  <Container>
+    <PromptForm />
+  </Container>
+</section>
 
       {/* Features Section */}
       <section id="features" className="py-24 md:py-32">
