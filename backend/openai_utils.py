@@ -36,38 +36,28 @@ def generate_dockerfile_code(prompt):
     return _chat_with_openai("You are a Dockerfile generator.", prompt)
 
 
-def generate_aws_command(prompt: str) -> dict:
-    """
-    Prompts OpenAI to return AWS CLI command with explanation in JSON format.
-    Returns:
-        {
-            "code": "...",
-            "explanation": "..."
-        }
-    """
+def generate_aws_command(prompt):
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {
+                "role": "system",
+                "content": (
+                    "You are an expert in AWS CLI. "
+                    "Always return a JSON object with two fields: 'code' and 'explanation'. "
+                    "Format multi-step commands in proper multiline syntax using backslashes (\\) for line continuation. "
+                    "Avoid semicolons (;) unless required. Do NOT return markdown or code fences."
+                ),
+            },
+            {"role": "user", "content": prompt},
+        ],
+    )
+
     try:
-        response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {
-                    "role": "system",
-                    "content": (
-                        "You are an expert in AWS CLI. Respond only with a JSON object "
-                        "that includes 'code' and 'explanation'. Do not include markdown or code blocks."
-                    ),
-                },
-                {"role": "user", "content": prompt},
-            ],
-        )
         content = response.choices[0].message.content.strip()
-
-        # Remove surrounding markdown if present
-        if content.startswith("```") and content.endswith("```"):
-            content = content.strip("` \n")
-
         return json.loads(content)
-
-    except json.JSONDecodeError:
-        raise HTTPException(status_code=500, detail=f"Invalid JSON format from OpenAI.\nRaw response:\n{content}")
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"OpenAI API error: {str(e)}")
+        return {
+            "code": "",
+            "explanation": f"Failed to parse AWS response: {str(e)}\n\nRaw content: {content}"
+        }
