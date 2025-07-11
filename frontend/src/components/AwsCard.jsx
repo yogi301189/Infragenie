@@ -1,64 +1,59 @@
-// components/AwsCard.jsx
-import React, { useState } from "react";
-import { Card, CardContent } from "./ui/card";
-import { Copy } from "lucide-react";
+import { useState } from "react";
 
-export default function AwsCard({ prompt, command, explanation, logs }) {
-  const [activeTab, setActiveTab] = useState("command");
-  const [copied, setCopied] = useState(false);
+export default function AWSCard() {
+  const [prompt, setPrompt] = useState("");
+  const [response, setResponse] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(command);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
-  };
+  const handleGenerate = async () => {
+    setLoading(true);
+    setResponse(null);
+    try {
+      const res = await fetch("https://infragenie-backend.onrender.com/aws-generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ prompt })
+      });
 
-  const renderContent = () => {
-    if (activeTab === "command") return command;
-    if (activeTab === "explanation") return explanation;
-    if (activeTab === "logs") return logs || "Logs will appear here.";
+      const data = await res.json();
+      setResponse(data);
+    } catch (error) {
+      console.error("Error:", error);
+      setResponse({ code: "", explanation: "Failed to fetch response." });
+    }
+    setLoading(false);
   };
 
   return (
-    <Card className="bg-[#0f0f1a] border border-slate-700 p-5 rounded-xl shadow-xl">
-      <div className="flex items-center gap-3 mb-4">
-        <img src="/icons/aws-icon.svg" alt="aws" className="h-6 w-6" />
-        <p className="text-white font-medium">{prompt}</p>
-      </div>
-      <div className="flex gap-6 mb-2 text-sm border-b border-slate-700 pb-1">
-        {["command", "explanation", "logs"].map((tab) => (
-          <span
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`capitalize cursor-pointer ${
-              activeTab === tab
-                ? "text-indigo-400 border-b-2 border-indigo-400"
-                : "text-slate-500"
-            }`}
-          >
-            {tab}
-          </span>
-        ))}
-      </div>
-      <CardContent className="bg-[#161622] text-slate-300 text-sm font-mono p-4 rounded-md relative">
-        <pre className="whitespace-pre-wrap">{renderContent()}</pre>
-        <button
-          onClick={handleCopy}
-          className="absolute top-3 right-3 text-slate-400 hover:text-white"
-        >
-          <Copy size={16} />
-        </button>
-        {copied && (
-          <span className="absolute top-3 right-10 text-xs text-green-400">
-            Copied!
-          </span>
-        )}
-      </CardContent>
-      <div className="flex justify-center gap-4 mt-6">
-        <img src="/icons/k8s.svg" className="h-6" alt="k8s" />
-        <img src="/icons/docker.svg" className="h-6" alt="docker" />
-        <img src="/icons/azure.svg" className="h-6" alt="azure" />
-      </div>
-    </Card>
+    <div className="max-w-xl mx-auto bg-white shadow-xl rounded-2xl p-6 space-y-4">
+      <h2 className="text-xl font-semibold text-gray-800">AWS CLI Generator</h2>
+      <textarea
+        className="w-full p-2 border rounded-md resize-none"
+        rows={4}
+        placeholder="Enter prompt to generate AWS CLI command"
+        value={prompt}
+        onChange={(e) => setPrompt(e.target.value)}
+      />
+      <button
+        onClick={handleGenerate}
+        disabled={loading || !prompt.trim()}
+        className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
+      >
+        {loading ? "Generating..." : "Generate"}
+      </button>
+
+      {response && (
+        <div className="bg-gray-100 p-4 rounded-md">
+          <p className="text-sm font-semibold text-gray-700 mb-1">🔧 Command:</p>
+          <pre className="bg-white p-2 rounded-md text-sm overflow-x-auto">
+            {response.code}
+          </pre>
+          <p className="text-sm font-semibold text-gray-700 mt-3 mb-1">🧠 Explanation:</p>
+          <p className="text-sm text-gray-800">{response.explanation}</p>
+        </div>
+      )}
+    </div>
   );
 }
