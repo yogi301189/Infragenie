@@ -106,6 +106,12 @@ export default function LandingPage() {
               </a>
             </div>
           </div>
+{/* Prompt Form Section */}
+<section id="prompt" className="py-16 md:py-24 bg-[#0f0f1a] border-y border-slate-800">
+  <Container>
+    <PromptForm />
+  </Container>
+</section>
 
           {/* Right - Code Preview */}
           <motion.div
@@ -115,20 +121,12 @@ export default function LandingPage() {
           >
            <AwsCard
               prompt="Create an S3 bucket"
-              command="aws s3api create-bucket --bucket my-bucket --region us-east-1"
-              explanation="This AWS CLI command creates a bucket named 'my-bucket' in the us-east-1 region."
-              logs="Bucket creation successful at 12:34 PM UTC."
-           />
+            />
 
           </motion.div>
         </Container>
       </section>
-{/* Prompt Form Section */}
-<section id="prompt" className="py-16 md:py-24 bg-[#0f0f1a] border-y border-slate-800">
-  <Container>
-    <PromptForm />
-  </Container>
-</section>
+
 
       {/* Features Section */}
       <section id="features" className="py-24 md:py-32">
