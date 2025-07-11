@@ -55,6 +55,7 @@ export default function PromptForm() {
         >
           <option value="kubernetes">Kubernetes</option>
           <option value="terraform">Terraform</option>
+          <option value="Dockerfile">Dockerfile</option>
         </select>
 
         <Textarea
