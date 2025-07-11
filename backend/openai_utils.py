@@ -26,6 +26,15 @@ def generate_terraform_code(prompt):
         ]
     )
     return response.choices[0].message.content
+def generate_dockerfile_code(prompt):
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "You are a Terraform code generator."},
+            {"role": "user", "content": prompt}
+        ]
+    )
+    return response.choices[0].message.content
 
 # ✅ New function for AWS CLI command generation
 def generate_aws_command(prompt):
