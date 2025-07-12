@@ -11,7 +11,11 @@ export default function PromptForm() {
   const [explanation, setExplanation] = useState("");
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
-
+              function extractCodeBlock(text = "") {
+    const codeMatch = text.match(/```(?:\w+)?\n([\s\S]*?)```/);
+    if (codeMatch) return codeMatch[1].trim(); // Clean code block content
+    return text.trim(); // fallback
+  }
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!prompt.trim()) return;
@@ -27,8 +31,8 @@ export default function PromptForm() {
       });
 
       const data = await res.json();
-      setCode(data.code || "No command generated.");
-      setExplanation(data.explanation || "No explanation available.");
+      setCode(extractCodeBlock(data.code) || "No command generated.");
+      setExplanation(data.explanation?.trim()|| "No explanation available.");
     } catch (error) {
       setCode("Error generating response. Please try again.");
       setExplanation("");
