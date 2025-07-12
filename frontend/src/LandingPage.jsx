@@ -127,7 +127,6 @@ export default function LandingPage() {
         </Container>
       </section>
 <div className="flex flex-col lg:flex-row gap-6 justify-center items-start">
-  <AwsCard />
   <HowToInstallCard />
 </div>
       {/* Features Section */}
