@@ -123,12 +123,11 @@ export default function LandingPage() {
            <AwsCard
               prompt="Create an S3 bucket"
             />
-	    <HowToInstallCard />
-          </motion.div>
+	   </motion.div>
         </Container>
       </section>
 
-
+       <HowToInstallCard />
       {/* Features Section */}
       <section id="features" className="py-24 md:py-32">
         <Container>
@@ -171,7 +170,7 @@ export default function LandingPage() {
       className="max-w-3xl mx-auto text-lg text-slate-300 italic"
     >
       “InfraGenie saves me hours every deployment. Just type the intent and it does the heavy lifting.”
-      <footer className="mt-4 text-sm not-italic text-slate-400">— Priya K, Senior SRE @ TechNova</footer>
+      <footer className="mt-4 text-sm not-italic text-slate-400">— MohanPrasad, Senior SRE @ Capgemini</footer>
     </motion.blockquote>
   </Container>
 </section>
