@@ -52,7 +52,7 @@ export default function LandingPage() {
               offset={-60}
               className="gap-2 cursor-pointer"
             >
-              Try it Now
+              Signup/Signin
             </Link>
           </Button>
         </Container>
@@ -86,7 +86,7 @@ export default function LandingPage() {
             </motion.p>
             <div className="flex flex-wrap gap-4">
               <Link
-                to="get-started"
+                to="how-to-install"
                 smooth={true}
                 duration={500}
                 offset={-60}
