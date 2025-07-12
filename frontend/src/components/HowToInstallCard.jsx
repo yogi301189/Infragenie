@@ -22,7 +22,7 @@ const HowToInstallCard = () => {
           rel="noopener noreferrer"
           className="flex items-center gap-3 text-purple-300 hover:text-purple-500 transition"
         >
-          <img src="/icons/azure.svg" alt="Terraform" className="w-6 h-6" />
+          <img src="/icons/tform.svg" alt="Terraform" className="w-6 h-6" />
           Terraform
         </a>
         <a
