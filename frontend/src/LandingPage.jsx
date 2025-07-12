@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import React from "react";
 import { Button } from "./components/ui/button";
 import { Card, CardContent } from "./components/ui/card";
@@ -12,7 +13,8 @@ import HowToInstallCard from "./components/HowToInstallCard";
 import SeeInActionModal from "./components/SeeInActionModal";
 
 export default function LandingPage() {
-  return (
+const [showModal, setShowModal] = useState(false);  
+return (
     <div className="min-h-screen flex flex-col bg-[#0a0a12] text-white scroll-smooth">
       {/* Header */}
       <header className="sticky top-0 z-30 backdrop-blur supports-[backdrop-filter]:bg-slate-900/70 border-b border-slate-800">
