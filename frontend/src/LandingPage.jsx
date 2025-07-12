@@ -9,6 +9,7 @@ import WhyChoose from "./components/WhyChoose";
 import AwsCard from "./components/AwsCard";
 import PromptForm from "./PromptForm";
 import HowToInstallCard from "./components/HowToInstallCard";
+import SeeInActionModal from "./components/SeeInActionModal";
 
 export default function LandingPage() {
   return (
@@ -101,9 +102,9 @@ export default function LandingPage() {
                 target="_blank"
                 rel="noreferrer"
               >
-                <Button variant="outline" className="border-slate-600 text-white">
-                  See in Action
-                </Button>
+                <Button onClick={() => setShowModal(true)}>See in Action</Button>
+<SeeInActionModal open={showModal} onClose={() => setShowModal(false)} />
+
               </a>
             </div>
           </div>
