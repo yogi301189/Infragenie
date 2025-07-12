@@ -54,7 +54,7 @@ export default function AwsCard() {
       </select>
 
       <textarea
-        placeholder={`e.g., Create a ${category} bucket...`}
+        placeholder={`e.g., Create a s3 bucket...`}
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
         rows={3}
