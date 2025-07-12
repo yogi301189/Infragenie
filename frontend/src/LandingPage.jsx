@@ -98,11 +98,7 @@ return (
                   Try the Demo
                 </Button>
               </Link>
-              <a
-                href="https://github.com/yogi301189/infragenie"
-                target="_blank"
-                rel="noreferrer"
-              >
+              
                 <Button onClick={() => setShowModal(true)}>See in Action</Button>
 <SeeInActionModal open={showModal} onClose={() => setShowModal(false)} />
 
