@@ -8,6 +8,7 @@ import { Link, animateScroll as scroll } from "react-scroll";
 import WhyChoose from "./components/WhyChoose";
 import AwsCard from "./components/AwsCard";
 import PromptForm from "./PromptForm";
+import HowToInstallCard from "./components/HowToInstallCard";
 
 export default function LandingPage() {
   return (
@@ -122,7 +123,7 @@ export default function LandingPage() {
            <AwsCard
               prompt="Create an S3 bucket"
             />
-
+	    <HowToInstallCard />
           </motion.div>
         </Container>
       </section>
