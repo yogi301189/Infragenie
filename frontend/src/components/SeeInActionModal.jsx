@@ -58,7 +58,8 @@ export default function SeeInActionModal({ open, onClose }) {
       onClick={onClose}
     >
       <div
-        className="bg-black border border-white/10 rounded-2xl shadow-xl max-w-2xl w-full relative p-6 text-white"
+        className="bg-black border border-white/10 rounded-2xl shadow-xl max-w-2xl w-full relative p-6 text-white
+  max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <button onClick={onClose} className="absolute top-4 right-4 text-white hover:text-red-500">
