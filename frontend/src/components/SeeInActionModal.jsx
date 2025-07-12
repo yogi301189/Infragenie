@@ -53,15 +53,14 @@ export default function SeeInActionModal({ open, onClose }) {
   if (!open) return null;
 
   return (
-    <div  className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex justify-center items-center p-4"
-  onClick={onClose}
->
-
-      <<div
-  className="bg-black border border-white/10 rounded-2xl shadow-xl max-w-2xl w-full relative p-6 text-white"
-  onClick={(e) => e.stopPropagation()}
->
-
+    <div
+      className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex justify-center items-center p-4"
+      onClick={onClose}
+    >
+      <div
+        className="bg-black border border-white/10 rounded-2xl shadow-xl max-w-2xl w-full relative p-6 text-white"
+        onClick={(e) => e.stopPropagation()}
+      >
         <button onClick={onClose} className="absolute top-4 right-4 text-white hover:text-red-500">
           <X size={20} />
         </button>
