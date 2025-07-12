@@ -130,6 +130,20 @@ export default function LandingPage() {
 	   </motion.div>
         </Container>
       </section>
+<section id="how-to-install" className="py-12 px-4 sm:px-6 lg:px-12 bg-transparent">
+  <div className="max-w-7xl mx-auto">
+    <h2 className="text-2xl font-bold text-white mb-6">
+      Get Started Quickly
+    </h2>
+    <div className="flex flex-col lg:flex-row gap-6 justify-center items-start">
+      {/* AWS CLI Generator Card */}
+      <AwsCard />
+
+      {/* How To Install Card */}
+      <HowToInstallCard />
+    </div>
+  </div>
+</section>
 
       {/* Features Section */}
       <section id="features" className="py-24 md:py-32">
