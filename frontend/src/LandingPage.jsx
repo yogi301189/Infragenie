@@ -102,7 +102,7 @@ return (
                 <Button onClick={() => setShowModal(true)}>See in Action</Button>
 <SeeInActionModal open={showModal} onClose={() => setShowModal(false)} />
 
-              </a>
+          
             </div>
           </div>
 {/* Prompt Form Section */}
