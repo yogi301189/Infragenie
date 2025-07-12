@@ -120,12 +120,13 @@ export default function LandingPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
           >
-           <AwsCard
-              prompt="Create an S3 bucket"
-            />
 <div className="flex flex-col lg:flex-row gap-6 justify-center items-start">
   <HowToInstallCard />
 </div>
+           <AwsCard
+              prompt="Create an S3 bucket"
+            />
+
 	   </motion.div>
         </Container>
       </section>
