@@ -126,8 +126,10 @@ export default function LandingPage() {
 	   </motion.div>
         </Container>
       </section>
-
-       <HowToInstallCard />
+<div className="flex flex-col lg:flex-row gap-6 justify-center items-start">
+  <AwsCard />
+  <HowToInstallCard />
+</div>
       {/* Features Section */}
       <section id="features" className="py-24 md:py-32">
         <Container>
