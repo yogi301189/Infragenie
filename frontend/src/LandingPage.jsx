@@ -123,12 +123,13 @@ export default function LandingPage() {
            <AwsCard
               prompt="Create an S3 bucket"
             />
-	   </motion.div>
-        </Container>
-      </section>
 <div className="flex flex-col lg:flex-row gap-6 justify-center items-start">
   <HowToInstallCard />
 </div>
+	   </motion.div>
+        </Container>
+      </section>
+
       {/* Features Section */}
       <section id="features" className="py-24 md:py-32">
         <Container>
