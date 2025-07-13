@@ -10,7 +10,7 @@ import AwsCard from "./components/AwsCard";
 import PromptForm from "./PromptForm";
 import HowToInstallCard from "./components/HowToInstallCard";
 import SeeInActionModal from "./components/SeeInActionModal";
-import ErrorCheckCard from "./components/ErrorCheckCard ";
+import ErrorCheckCard from "./components/ErrorCheckCard";
 
 export default function LandingPage() {
 const [showModal, setShowModal] = useState(false);  
