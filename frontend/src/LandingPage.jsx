@@ -1,3 +1,4 @@
+import { useAuth } from "../context/AuthContext"; 
 import React, { useState } from "react";
 import { Button } from "./components/ui/button";
 import { Card, CardContent } from "./components/ui/card";
@@ -11,8 +12,10 @@ import PromptForm from "./PromptForm";
 import HowToInstallCard from "./components/HowToInstallCard";
 import SeeInActionModal from "./components/SeeInActionModal";
 import ErrorCheckCard from "./components/ErrorCheckCard";
+import { Link } from "react-router-dom";
 
 export default function LandingPage() {
+const { user } = useAuth();
 const [showModal, setShowModal] = useState(false);  
 return (
     <div className="min-h-screen flex flex-col bg-[#0a0a12] text-white scroll-smooth">
@@ -42,16 +45,11 @@ return (
             </a>
           </nav>
           <Button asChild className="ml-4 hidden md:inline-flex">
-            <Link
-              to="get-started"
-              smooth={true}
-              duration={500}
-              offset={-60}
-              className="gap-2 cursor-pointer"
-            >
-              Signup/Signin
-            </Link>
-          </Button>
+  <Link to="/login" className="gap-2 cursor-pointer">
+    Signup / Signin
+  </Link>
+</Button>
+
         </Container>
       </header>
 
