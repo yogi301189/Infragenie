@@ -36,7 +36,9 @@ export default function PromptForm() {
           body: JSON.stringify({ prompt, type, mode }),
         });
         const data = await res.json();
-        setCode(extractCodeBlock(data.code) || "No command generated.");
+        const rawCode = Array.isArray(data.code) ? data.code.join("\n") : data.code;
+setCode(extractCodeBlock(rawCode) || "No command generated.");
+
         setExplanation(data.explanation?.trim() || "No explanation available.");
       } catch (error) {
         setCode("Error generating response. Please try again.");

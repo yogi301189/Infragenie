@@ -95,7 +95,7 @@ export default function ErrorCheckCard() {
             <option value="dockerfile">Dockerfile</option>
             <option value="python">Python</option>
           </select>
-          <label className="text-white flex items-center gap-2">
+          <label className="text-white flex items-center gap-2 font-medium">
             <input
               type="checkbox"
               checked={autoDetect}
