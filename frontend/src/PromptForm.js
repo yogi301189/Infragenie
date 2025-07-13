@@ -36,6 +36,7 @@ export default function PromptForm() {
           body: JSON.stringify({ prompt, type, mode }),
         });
         const data = await res.json();
+console.log("AI response:", data);
         const rawCode = Array.isArray(data.code) ? data.code.join("\n") : data.code;
 setCode(extractCodeBlock(rawCode) || "No command generated.");
 
@@ -59,7 +60,8 @@ setCode(extractCodeBlock(rawCode) || "No command generated.");
         });
 
         const data = await res.json();
-        const assistantMsg = { role: "assistant", content: data.response };
+        const assistantMsg = { role: "assistant", content: data?.response || "❌ No reply from AI." };
+
         setChatHistory([...updatedMessages, assistantMsg]);
         setPrompt("");
       } catch (error) {
