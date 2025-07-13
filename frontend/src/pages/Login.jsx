@@ -1,14 +1,15 @@
-// src/pages/Login.jsx
 import React, { useState } from "react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -16,8 +17,22 @@ export default function Login() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       console.log("✅ Logged in");
+      navigate("/"); // Redirect after login
     } catch (err) {
-      setError("Invalid credentials.");
+      console.error("Login error:", err.code);
+      switch (err.code) {
+        case "auth/user-not-found":
+          setError("User not found. Please sign up.");
+          break;
+        case "auth/wrong-password":
+          setError("Incorrect password.");
+          break;
+        case "auth/invalid-email":
+          setError("Invalid email format.");
+          break;
+        default:
+          setError("Login failed. Please try again.");
+      }
     }
   };
 
@@ -44,8 +59,11 @@ export default function Login() {
           <Button type="submit" className="w-full">Login</Button>
         </form>
         <p className="text-slate-400 text-sm mt-4 text-center">
-  Don’t have an account? <Link to="/signup" className="text-indigo-400 underline">Sign up</Link>
-</p>
+          Don’t have an account?{" "}
+          <Link to="/signup" className="text-indigo-400 underline">
+            Sign up
+          </Link>
+        </p>
       </div>
     </div>
   );
