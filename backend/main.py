@@ -1,12 +1,19 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
-from openai_utils import generate_k8s_yaml, generate_terraform_code, generate_aws_command, generate_dockerfile_code
+from openai_utils import (
+    generate_k8s_yaml,
+    generate_terraform_code,
+    generate_aws_command,
+    generate_dockerfile_code,
+)
 
 app = FastAPI()
+
 @app.get("/")
 async def root():
     return {"message": "InfraGenie backend is live"}
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -14,9 +21,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Updated to include 'mode'
 class CodeRequest(BaseModel):
     type: str
     prompt: str
+    mode: str = "command"  # default fallback if frontend doesn't send it
 
 class PromptOnly(BaseModel):
     prompt: str
@@ -24,17 +33,17 @@ class PromptOnly(BaseModel):
 @app.post("/generate")
 def generate_code(request: CodeRequest):
     if request.type == "kubernetes":
-        output = generate_k8s_yaml(request.prompt)
+        code, explanation = generate_k8s_yaml(request.prompt, request.mode)
     elif request.type == "terraform":
-        output = generate_terraform_code(request.prompt)
+        code, explanation = generate_terraform_code(request.prompt, request.mode)
     elif request.type == "dockerfile":
-        output = generate_dockerfile_code(request.prompt)
+        code, explanation = generate_dockerfile_code(request.prompt, request.mode)
     else:
         raise HTTPException(status_code=400, detail="Invalid type")
-    
+
     return {
-        "code": output,
-        "explanation": "Code generated based on your prompt."
+        "code": code,
+        "explanation": explanation
     }
 
 @app.post("/aws-generate")

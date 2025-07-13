@@ -5,11 +5,9 @@ from dotenv import load_dotenv
 from fastapi import HTTPException
 
 load_dotenv()
-
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-
-# Utility to safely call OpenAI with a given system role and prompt
+# 🔧 Generic OpenAI caller
 def _chat_with_openai(system_msg: str, prompt: str):
     try:
         response = client.chat.completions.create(
@@ -23,19 +21,47 @@ def _chat_with_openai(system_msg: str, prompt: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"OpenAI API error: {str(e)}")
 
+# 🔧 Extracts code from markdown block
+def _extract_code_block(text: str):
+    import re
+    match = re.search(r"```(?:\w+)?\n([\s\S]*?)```", text)
+    return match.group(1).strip() if match else text.strip()
 
-def generate_k8s_yaml(prompt):
-    return _chat_with_openai("You are a Kubernetes YAML generator.", prompt)
+# ✅ K8s Generator with mode
+def generate_k8s_yaml(prompt, mode="command"):
+    if mode == "command":
+        raw = _chat_with_openai("You are a Kubernetes YAML generator. Only return YAML code without explanation.", prompt)
+        return _extract_code_block(raw), ""
+    else:
+        raw = _chat_with_openai("You are a Kubernetes expert. First generate the YAML, then explain it.", prompt)
+        parts = raw.split("```")
+        code = _extract_code_block(raw)
+        explanation = raw.replace(f"```yaml\n{code}\n```", "").strip()
+        return code, explanation
 
+# ✅ Terraform Generator with mode
+def generate_terraform_code(prompt, mode="command"):
+    if mode == "command":
+        raw = _chat_with_openai("You are a Terraform generator. Only return code without any explanation.", prompt)
+        return _extract_code_block(raw), ""
+    else:
+        raw = _chat_with_openai("You are a Terraform expert. First generate code, then explain it.", prompt)
+        code = _extract_code_block(raw)
+        explanation = raw.replace(f"```hcl\n{code}\n```", "").strip()
+        return code, explanation
 
-def generate_terraform_code(prompt):
-    return _chat_with_openai("You are a Terraform code generator.", prompt)
+# ✅ Dockerfile Generator with mode
+def generate_dockerfile_code(prompt, mode="command"):
+    if mode == "command":
+        raw = _chat_with_openai("You are a Docker expert. Generate Dockerfile only. No explanation.", prompt)
+        return _extract_code_block(raw), ""
+    else:
+        raw = _chat_with_openai("You are a Docker expert. First generate the Dockerfile, then explain it.", prompt)
+        code = _extract_code_block(raw)
+        explanation = raw.replace(f"```Dockerfile\n{code}\n```", "").strip()
+        return code, explanation
 
-
-def generate_dockerfile_code(prompt):
-    return _chat_with_openai("You are a Dockerfile generator.", prompt)
-
-
+# ✅ AWS CLI Handler (already returns structured response)
 def generate_aws_command(prompt):
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",
