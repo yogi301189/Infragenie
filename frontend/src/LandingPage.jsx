@@ -10,6 +10,7 @@ import AwsCard from "./components/AwsCard";
 import PromptForm from "./PromptForm";
 import HowToInstallCard from "./components/HowToInstallCard";
 import SeeInActionModal from "./components/SeeInActionModal";
+import ErrorCheckCard from "./components/ErrorCheckCard ";
 
 export default function LandingPage() {
 const [showModal, setShowModal] = useState(false);  
@@ -120,7 +121,16 @@ return (
           >
 	   </motion.div>
         </Container>
+
+
       </section>
+<section id="ErrorCheckCard" className="py-12 px-4 sm:px-6 lg:px-12 bg-transparent">
+  <div className="max-w-7xl mx-auto">
+    <h2 className="text-2xl font-bold text-white mb-6">
+<ErrorCheckCard />
+</h2>
+ </div>
+</section>
 <section id="how-to-install" className="py-12 px-4 sm:px-6 lg:px-12 bg-transparent">
   <div className="max-w-7xl mx-auto">
     <h2 className="text-2xl font-bold text-white mb-6">
