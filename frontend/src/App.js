@@ -22,7 +22,8 @@ function App() {
             </>
           }
         />
-
+	<Route path="/features" element={<Features />} />
+	
         {/* Docs Route */}
         <Route path="/docs" element={<Docs />} />
       </Routes>

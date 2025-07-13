@@ -26,15 +26,9 @@ return (
             <img src="/logo.svg" alt="logo" className="h-8 w-8" /> Infragenie
           </button>
           <nav className="hidden md:flex items-center gap-6 text-slate-300">
-            <Link
-              to="features"
-              smooth={true}
-              duration={500}
-              offset={-60}
-              className="hover:text-white transition cursor-pointer"
-            >
+            <a href="/features" className="hover:text-white transition">
               Features
-            </Link>
+             </a>
             <a href="/docs" className="hover:text-white transition">
               Docs
             </a>

@@ -3,6 +3,7 @@ import React from "react";
 import { Button } from "../components/ui/button";
 import { Container } from "../components/ui/container";
 import { Link } from "react-router-dom";
+import ErrorCheckCard from "../components/ErrorCheckCard"; // ✅ Import
 
 export default function Docs() {
   return (
@@ -18,7 +19,7 @@ export default function Docs() {
             <a href="https://github.com/yogi301189/infragenie" target="_blank" rel="noreferrer" className="hover:text-white">GitHub</a>
           </nav>
           <Button asChild className="ml-4 hidden md:inline-flex">
-            <a href="/#prompt-section">Try it Now</a> {/* scrolls to bottom of landing */}
+            <a href="/#prompt-section">Try it Now</a>
           </Button>
         </Container>
       </header>
@@ -50,6 +51,12 @@ export default function Docs() {
           <Button size="lg">
             <a href="/#prompt-section">Try it Now</a>
           </Button>
+
+          {/* ✅ Embed the Error Checker */}
+          <div className="pt-16 border-t border-slate-800">
+            <h2 className="text-2xl font-bold text-white mb-4">🛠 Try Error Check</h2>
+            <ErrorCheckCard />
+          </div>
         </Container>
       </main>
 
