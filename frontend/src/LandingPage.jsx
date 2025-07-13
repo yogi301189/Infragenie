@@ -5,14 +5,14 @@ import { Card, CardContent } from "./components/ui/card";
 import { Copy } from "lucide-react";
 import { motion } from "framer-motion";
 import { Container } from "./components/ui/container";
-import { Link, animateScroll as scroll } from "react-scroll";
+import { Link as ScrollLink, animateScroll as scroll } from "react-scroll";
 import WhyChoose from "./components/WhyChoose";
 import AwsCard from "./components/AwsCard";
 import PromptForm from "./PromptForm";
 import HowToInstallCard from "./components/HowToInstallCard";
 import SeeInActionModal from "./components/SeeInActionModal";
 import ErrorCheckCard from "./components/ErrorCheckCard";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
 export default function LandingPage() {
 const { user } = useAuth();
@@ -45,9 +45,9 @@ return (
             </a>
           </nav>
           <Button asChild className="ml-4 hidden md:inline-flex">
-  <Link to="/login" className="gap-2 cursor-pointer">
+  <RouterLink  to="/login" className="gap-2 cursor-pointer">
     Signup / Signin
-  </Link>
+  </RouterLink >
 </Button>
 
         </Container>
@@ -80,7 +80,7 @@ return (
               Infragenie turns natural language prompts into production-grade Kubernetes, Terraform & Docker code.
             </motion.p>
             <div className="flex flex-wrap gap-4">
-              <Link
+              <ScrollLink
                 to="how-to-install"
                 smooth={true}
                 duration={500}
@@ -90,7 +90,7 @@ return (
                 <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">
                   Try the Demo
                 </Button>
-              </Link>
+              </ScrollLink>
               
                 <Button onClick={() => setShowModal(true)}>See in Action</Button>
 <SeeInActionModal open={showModal} onClose={() => setShowModal(false)} />
