@@ -1,4 +1,3 @@
-
 // src/pages/Signup.jsx
 import React, { useState } from "react";
 import { Button } from "../components/ui/button";
@@ -16,15 +15,31 @@ export default function Signup() {
   const handleSignup = async (e) => {
     e.preventDefault();
     setError(null);
+
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
       return;
     }
+
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       console.log("✅ Signed up");
+      window.location.href = "/"; // or redirect to dashboard if needed
     } catch (err) {
-      setError("Signup failed. Please try again.");
+      console.error("Signup error:", err);
+      switch (err.code) {
+        case "auth/email-already-in-use":
+          setError("Email is already registered.");
+          break;
+        case "auth/invalid-email":
+          setError("Please enter a valid email.");
+          break;
+        case "auth/weak-password":
+          setError("Password should be at least 6 characters.");
+          break;
+        default:
+          setError("Signup failed. Please try again.");
+      }
     }
   };
 
@@ -58,8 +73,8 @@ export default function Signup() {
           <Button type="submit" className="w-full">Sign Up</Button>
         </form>
         <p className="text-slate-400 text-sm mt-4 text-center">
-  Already have an account? <Link to="/login" className="text-indigo-400 underline">Login</Link>
-</p>
+          Already have an account? <Link to="/login" className="text-indigo-400 underline">Login</Link>
+        </p>
       </div>
     </div>
   );
