@@ -6,6 +6,7 @@ from openai_utils import (
     generate_terraform_code,
     generate_aws_command,
     generate_dockerfile_code,
+    _chat_with_openai,  # Needed for explanation and error check
 )
 
 app = FastAPI()
@@ -14,6 +15,7 @@ app = FastAPI()
 async def root():
     return {"message": "InfraGenie backend is live"}
 
+# CORS setup
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -21,18 +23,24 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Updated to include 'mode'
+# ---------- Schemas ----------
+
 class CodeRequest(BaseModel):
     type: str
     prompt: str
-    mode: str = "command"  # default fallback if frontend doesn't send it
+    mode: str = "command"  # "command" or "chat"
 
 class PromptOnly(BaseModel):
     prompt: str
 
+class ErrorCheckRequest(BaseModel):
+    code: str
+    type: str  # "kubernetes", "terraform", "dockerfile", or "python"
+
+# ---------- Main Routes ----------
+
 @app.post("/generate")
 def generate_code(request: CodeRequest):
-    # Generate output code only
     if request.type == "kubernetes":
         output = generate_k8s_yaml(request.prompt)
     elif request.type == "terraform":
@@ -42,7 +50,7 @@ def generate_code(request: CodeRequest):
     else:
         raise HTTPException(status_code=400, detail="Invalid type")
 
-    # Mode-specific logic
+    # Explanation only for chat mode
     if request.mode == "chat":
         explanation = _chat_with_openai(
             f"You are an expert in {request.type}. Explain the following {request.type} configuration:",
@@ -56,7 +64,6 @@ def generate_code(request: CodeRequest):
         "explanation": explanation
     }
 
-
 @app.post("/aws-generate")
 def aws_generate(request: PromptOnly):
     if not request.prompt.strip():
@@ -64,20 +71,25 @@ def aws_generate(request: PromptOnly):
 
     result = generate_aws_command(request.prompt)
     return result
-class ErrorCheckRequest(BaseModel):
-    code: str
-    type: str  # "kubernetes", "terraform", or "dockerfile"
 
 @app.post("/check-error")
 def check_error(request: ErrorCheckRequest):
     if not request.code.strip():
         raise HTTPException(status_code=400, detail="Code is required")
 
-    system_msg = (
-        f"You are an expert in {request.type}. "
-        "Check the following code for errors. "
-        "Fix the errors and show the corrected code with comments starting with # explaining what was fixed."
-    )
-    response = _chat_with_openai(system_msg, request.code)
+    # Python-specific linting logic
+    if request.type == "python":
+        system_msg = (
+            "You are a Python linter and fixer. "
+            "Check the following Python code for errors, bad practices, or missing imports. "
+            "Return the corrected code with inline comments starting with # explaining what was fixed."
+        )
+    else:
+        system_msg = (
+            f"You are an expert in {request.type}. "
+            "Check the following code for errors. "
+            "Fix the errors and show the corrected code with comments starting with # explaining what was fixed."
+        )
 
+    response = _chat_with_openai(system_msg, request.code)
     return {"corrected": response}
