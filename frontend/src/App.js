@@ -26,9 +26,7 @@ function App() {
           }
         />
 	<Route path="/features" element={<Features />} />
-	<AuthProvider>
-  <App />
-</AuthProvider>
+	
         {/* Docs Route */}
         <Route path="/docs" element={<Docs />} />
 <Route path="/login" element={<Login />} />
