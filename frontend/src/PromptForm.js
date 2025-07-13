@@ -6,16 +6,20 @@ import { Copy, Loader2 } from "lucide-react";
 export default function PromptForm() {
   const [prompt, setPrompt] = useState("");
   const [type, setType] = useState("kubernetes");
+  const [mode, setMode] = useState("command");
   const [activeTab, setActiveTab] = useState("command");
   const [code, setCode] = useState("");
   const [explanation, setExplanation] = useState("");
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
-              function extractCodeBlock(text = "") {
+
+  // ✨ Clean code block from markdown
+  function extractCodeBlock(text = "") {
     const codeMatch = text.match(/```(?:\w+)?\n([\s\S]*?)```/);
     if (codeMatch) return codeMatch[1].trim(); // Clean code block content
     return text.trim(); // fallback
   }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!prompt.trim()) return;
@@ -23,16 +27,17 @@ export default function PromptForm() {
     setCode("");
     setExplanation("");
     setActiveTab("command");
+
     try {
       const res = await fetch(`${process.env.REACT_APP_API_URL}/generate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt, type }),
+        body: JSON.stringify({ prompt, type, mode }),
       });
 
       const data = await res.json();
       setCode(extractCodeBlock(data.code) || "No command generated.");
-      setExplanation(data.explanation?.trim()|| "No explanation available.");
+      setExplanation(data.explanation?.trim() || "No explanation available.");
     } catch (error) {
       setCode("Error generating response. Please try again.");
       setExplanation("");
@@ -48,21 +53,24 @@ export default function PromptForm() {
     setCopied(true);
     setTimeout(() => setCopied(false), 1500);
   };
-<div className="flex items-center gap-4 mb-4">
-  <label className="text-white font-medium">Mode:</label>
-  <select
-    value={mode}
-    onChange={(e) => setMode(e.target.value)}
-    className="bg-slate-800 text-white border border-slate-600 p-2 rounded"
-  >
-    <option value="command">Command</option>
-    <option value="chat">Chat</option>
-  </select>
-</div>
 
   return (
     <div className="max-w-3xl mx-auto px-4">
       <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Mode Toggle */}
+        <div className="flex items-center gap-4">
+          <label className="text-white font-medium">Mode:</label>
+          <select
+            value={mode}
+            onChange={(e) => setMode(e.target.value)}
+            className="bg-slate-800 text-white border border-slate-600 p-2 rounded"
+          >
+            <option value="command">Command</option>
+            <option value="chat">Chat</option>
+          </select>
+        </div>
+
+        {/* Type Dropdown */}
         <select
           value={type}
           onChange={(e) => setType(e.target.value)}
@@ -73,6 +81,7 @@ export default function PromptForm() {
           <option value="dockerfile">Dockerfile</option>
         </select>
 
+        {/* Prompt Textarea */}
         <Textarea
           rows={4}
           value={prompt}
@@ -81,6 +90,7 @@ export default function PromptForm() {
           className="bg-slate-800 text-white border border-slate-600"
         />
 
+        {/* Submit Button */}
         <Button
           type="submit"
           disabled={loading}
@@ -97,63 +107,68 @@ export default function PromptForm() {
       </form>
 
       {(code || explanation) && (
-  <div className="mt-10">
-    <div className="bg-[#0f0f1a] border border-slate-700 rounded-xl shadow-xl p-5">
-      <div className="flex items-center gap-3 mb-4">
-        <img
-          src={
-            type === "kubernetes"
-              ? "/icons/k8s.svg"
-              : type === "terraform"
-              ? "/icons/terraform-icon.svg"
-              : "/icons/aws-icon.svg"
-          }
-          alt={type}
-          className="h-6 w-6"
-        />
-        <p className="text-white font-medium">{prompt}</p>
-      </div>
+        <div className="mt-10">
+          <div className="bg-[#0f0f1a] border border-slate-700 rounded-xl shadow-xl p-5">
+            {/* Prompt Preview */}
+            <div className="flex items-center gap-3 mb-4">
+              <img
+                src={
+                  type === "kubernetes"
+                    ? "/icons/k8s.svg"
+                    : type === "terraform"
+                    ? "/icons/terraform-icon.svg"
+                    : "/icons/aws-icon.svg"
+                }
+                alt={type}
+                className="h-6 w-6"
+              />
+              <p className="text-white font-medium">{prompt}</p>
+            </div>
 
-      <div className="flex gap-6 text-sm border-b border-slate-700 pb-2 mb-4">
-        <button
-          onClick={() => setActiveTab("command")}
-          className={`${
-            activeTab === "command"
-              ? "text-indigo-400 border-b-2 border-indigo-400"
-              : "text-slate-400"
-          } font-medium`}
-        >
-          Command
-        </button>
-        <button
-          onClick={() => setActiveTab("explanation")}
-          className={`${
-            activeTab === "explanation"
-              ? "text-indigo-400 border-b-2 border-indigo-400"
-              : "text-slate-400"
-          } font-medium`}
-        >
-          Explanation
-        </button>
-      </div>
+            {/* Tabs */}
+            <div className="flex gap-6 text-sm border-b border-slate-700 pb-2 mb-4">
+              <button
+                onClick={() => setActiveTab("command")}
+                className={`${
+                  activeTab === "command"
+                    ? "text-indigo-400 border-b-2 border-indigo-400"
+                    : "text-slate-400"
+                } font-medium`}
+              >
+                Command
+              </button>
+              <button
+                onClick={() => setActiveTab("explanation")}
+                className={`${
+                  activeTab === "explanation"
+                    ? "text-indigo-400 border-b-2 border-indigo-400"
+                    : "text-slate-400"
+                } font-medium`}
+              >
+                Explanation
+              </button>
+            </div>
 
-      <div className="relative bg-[#161622] text-slate-300 text-sm font-mono p-4 rounded-md">
-        <pre className="whitespace-pre-wrap">{activeTab === "command" ? code : explanation}</pre>
-        <button
-          onClick={handleCopy}
-          className="absolute top-3 right-3 text-slate-400 hover:text-white"
-        >
-          <Copy size={16} />
-        </button>
-        {copied && (
-          <span className="absolute top-3 right-12 text-xs text-green-400">
-            Copied!
-          </span>
-        )}
-      </div>
+            {/* Output */}
+            <div className="relative bg-[#161622] text-slate-300 text-sm font-mono p-4 rounded-md">
+              <pre className="whitespace-pre-wrap">
+                {activeTab === "command" ? code : explanation}
+              </pre>
+              <button
+                onClick={handleCopy}
+                className="absolute top-3 right-3 text-slate-400 hover:text-white"
+              >
+                <Copy size={16} />
+              </button>
+              {copied && (
+                <span className="absolute top-3 right-12 text-xs text-green-400">
+                  Copied!
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
-  </div>
-  )} {/* ✅ this is the closing parenthesis that was likely missing */}
-    </div> // ✅ closing the topmost <div>
   );
 }
