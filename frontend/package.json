@@ -13,6 +13,7 @@
     "@fontsource/inter": "^5.2.6",
     "autoprefixer": "^10.x",
     "clsx": "^2.1.1",
+    "firebase": "^11.10.0",
     "framer-motion": "^12.23.1",
     "lucide-react": "^0.525.0",
     "postcss": "^8.x",

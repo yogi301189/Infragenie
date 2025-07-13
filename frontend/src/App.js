@@ -4,6 +4,8 @@ import LandingPage from "./LandingPage";
 import PromptForm from "./PromptForm";
 import Docs from "./pages/Docs"; // Make sure Docs.jsx is inside /src/pages
 import ErrorCheckCard from './components/ErrorCheckCard';
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 
 function App() {
   return (
@@ -26,6 +28,8 @@ function App() {
 	
         {/* Docs Route */}
         <Route path="/docs" element={<Docs />} />
+<Route path="/login" element={<Login />} />
+<Route path="/signup" element={<Signup />} />
       </Routes>
     </Router>
   );
