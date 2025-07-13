@@ -6,6 +6,7 @@ import Docs from "./pages/Docs"; // Make sure Docs.jsx is inside /src/pages
 import ErrorCheckCard from './components/ErrorCheckCard';
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
   return (
@@ -25,7 +26,9 @@ function App() {
           }
         />
 	<Route path="/features" element={<Features />} />
-	
+	<AuthProvider>
+  <App />
+</AuthProvider>
         {/* Docs Route */}
         <Route path="/docs" element={<Docs />} />
 <Route path="/login" element={<Login />} />
