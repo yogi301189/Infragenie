@@ -17,6 +17,7 @@ function App() {
               <LandingPage />
               <section id="prompt" className="bg-slate-900 py-24 px-4">
                 <PromptForm />
+<ErrorCheckCard />
               </section>
             </>
           }
