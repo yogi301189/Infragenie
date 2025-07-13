@@ -50,6 +50,7 @@ export default function ErrorCheckCard() {
           <option value="kubernetes">Kubernetes</option>
           <option value="terraform">Terraform</option>
           <option value="dockerfile">Dockerfile</option>
+          <option value="python">Python</option>
         </select>
 
         <Button onClick={handleCheck} disabled={loading}>
