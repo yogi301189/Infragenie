@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "./components/ui/button";
 import { Textarea } from "./components/ui/textarea";
-import { Copy, Loader2 } from "lucide-react";
+import { Copy, Download, Loader2 } from "lucide-react";
 
 export default function PromptForm() {
   const [prompt, setPrompt] = useState("");
@@ -13,11 +13,9 @@ export default function PromptForm() {
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  // ✨ Clean code block from markdown
   function extractCodeBlock(text = "") {
     const codeMatch = text.match(/```(?:\w+)?\n([\s\S]*?)```/);
-    if (codeMatch) return codeMatch[1].trim(); // Clean code block content
-    return text.trim(); // fallback
+    return codeMatch ? codeMatch[1].trim() : text.trim();
   }
 
   const handleSubmit = async (e) => {
@@ -54,23 +52,20 @@ export default function PromptForm() {
     setTimeout(() => setCopied(false), 1500);
   };
 
+  const handleDownload = () => {
+    const fileType =
+      type === "kubernetes" ? "yaml" : type === "terraform" ? "tf" : "Dockerfile";
+    const fileContent = activeTab === "command" ? code : explanation;
+    const blob = new Blob([fileContent], { type: "text/plain;charset=utf-8" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `${type}-output.${fileType}`;
+    link.click();
+  };
+
   return (
     <div className="max-w-3xl mx-auto px-4">
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Mode Toggle */}
-        <div className="flex items-center gap-4">
-          <label className="text-white font-medium">Mode:</label>
-          <select
-            value={mode}
-            onChange={(e) => setMode(e.target.value)}
-            className="bg-slate-800 text-white border border-slate-600 p-2 rounded"
-          >
-            <option value="command">Command</option>
-            <option value="chat">Chat</option>
-          </select>
-        </div>
-
-        {/* Type Dropdown */}
+      <form onSubmit={handleSubmit} className="space-y-4">
         <select
           value={type}
           onChange={(e) => setType(e.target.value)}
@@ -81,7 +76,6 @@ export default function PromptForm() {
           <option value="dockerfile">Dockerfile</option>
         </select>
 
-        {/* Prompt Textarea */}
         <Textarea
           rows={4}
           value={prompt}
@@ -90,26 +84,35 @@ export default function PromptForm() {
           className="bg-slate-800 text-white border border-slate-600"
         />
 
-        {/* Submit Button */}
-        <Button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
-        >
-          {loading ? (
-            <span className="flex items-center justify-center gap-2">
-              <Loader2 className="h-4 w-4 animate-spin" /> Generating...
-            </span>
-          ) : (
-            "Generate"
-          )}
-        </Button>
+        <div className="flex items-center justify-between gap-4">
+          <select
+            value={mode}
+            onChange={(e) => setMode(e.target.value)}
+            className="bg-slate-800 text-white border border-slate-600 p-2 rounded"
+          >
+            <option value="command">Command</option>
+            <option value="chat">Chat</option>
+          </select>
+
+          <Button
+            type="submit"
+            disabled={loading}
+            className="bg-indigo-600 hover:bg-indigo-700 text-white"
+          >
+            {loading ? (
+              <span className="flex items-center gap-2">
+                <Loader2 className="h-4 w-4 animate-spin" /> Generating...
+              </span>
+            ) : (
+              "Generate"
+            )}
+          </Button>
+        </div>
       </form>
 
       {(code || explanation) && (
         <div className="mt-10">
           <div className="bg-[#0f0f1a] border border-slate-700 rounded-xl shadow-xl p-5">
-            {/* Prompt Preview */}
             <div className="flex items-center gap-3 mb-4">
               <img
                 src={
@@ -125,7 +128,6 @@ export default function PromptForm() {
               <p className="text-white font-medium">{prompt}</p>
             </div>
 
-            {/* Tabs */}
             <div className="flex gap-6 text-sm border-b border-slate-700 pb-2 mb-4">
               <button
                 onClick={() => setActiveTab("command")}
@@ -149,19 +151,30 @@ export default function PromptForm() {
               </button>
             </div>
 
-            {/* Output */}
             <div className="relative bg-[#161622] text-slate-300 text-sm font-mono p-4 rounded-md">
               <pre className="whitespace-pre-wrap">
                 {activeTab === "command" ? code : explanation}
               </pre>
-              <button
-                onClick={handleCopy}
-                className="absolute top-3 right-3 text-slate-400 hover:text-white"
-              >
-                <Copy size={16} />
-              </button>
+
+              <div className="absolute top-3 right-3 flex gap-2">
+                <button
+                  onClick={handleCopy}
+                  className="text-slate-400 hover:text-white"
+                  title="Copy"
+                >
+                  <Copy size={16} />
+                </button>
+                <button
+                  onClick={handleDownload}
+                  className="text-slate-400 hover:text-white"
+                  title="Download"
+                >
+                  <Download size={16} />
+                </button>
+              </div>
+
               {copied && (
-                <span className="absolute top-3 right-12 text-xs text-green-400">
+                <span className="absolute top-3 right-20 text-xs text-green-400">
                   Copied!
                 </span>
               )}
