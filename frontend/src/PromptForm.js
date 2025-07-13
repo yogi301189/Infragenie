@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button } from "./components/ui/button";
 import { Textarea } from "./components/ui/textarea";
 import { Copy, Download, Loader2 } from "lucide-react";
+import ChatMessage from "./components/ChatMessage";
 
 export default function PromptForm() {
   const [prompt, setPrompt] = useState("");
@@ -10,6 +11,7 @@ export default function PromptForm() {
   const [activeTab, setActiveTab] = useState("command");
   const [code, setCode] = useState("");
   const [explanation, setExplanation] = useState("");
+  const [chatHistory, setChatHistory] = useState([]); // 🧠 NEW
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -22,44 +24,85 @@ export default function PromptForm() {
     e.preventDefault();
     if (!prompt.trim()) return;
     setLoading(true);
-    setCode("");
-    setExplanation("");
-    setActiveTab("command");
 
-    try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/generate`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt, type, mode }),
-      });
-
-      const data = await res.json();
-      setCode(extractCodeBlock(data.code) || "No command generated.");
-      setExplanation(data.explanation?.trim() || "No explanation available.");
-    } catch (error) {
-      setCode("Error generating response. Please try again.");
+    if (mode === "command") {
+      setCode("");
       setExplanation("");
-    } finally {
-      setLoading(false);
+      setActiveTab("command");
+      try {
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/generate`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt, type, mode }),
+        });
+        const data = await res.json();
+        setCode(extractCodeBlock(data.code) || "No command generated.");
+        setExplanation(data.explanation?.trim() || "No explanation available.");
+      } catch (error) {
+        setCode("Error generating response. Please try again.");
+        setExplanation("");
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      // 💬 Chat mode
+      const newUserMsg = { role: "user", content: prompt };
+      const updatedMessages = [...chatHistory, newUserMsg];
+
+      try {
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/chat`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ messages: updatedMessages, type }),
+        });
+
+        const data = await res.json();
+        const assistantMsg = { role: "assistant", content: data.response };
+        setChatHistory([...updatedMessages, assistantMsg]);
+        setPrompt("");
+      } catch (error) {
+        setChatHistory([
+          ...updatedMessages,
+          { role: "assistant", content: "❌ Error processing your message." },
+        ]);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(
-      activeTab === "command" ? code : explanation
-    );
+    const content =
+      mode === "chat"
+        ? chatHistory.map((m) => `${m.role}: ${m.content}`).join("\n")
+        : activeTab === "command"
+        ? code
+        : explanation;
+
+    navigator.clipboard.writeText(content);
     setCopied(true);
     setTimeout(() => setCopied(false), 1500);
   };
 
   const handleDownload = () => {
-    const fileType =
-      type === "kubernetes" ? "yaml" : type === "terraform" ? "tf" : "Dockerfile";
-    const fileContent = activeTab === "command" ? code : explanation;
-    const blob = new Blob([fileContent], { type: "text/plain;charset=utf-8" });
+    const ext =
+      type === "kubernetes"
+        ? "yaml"
+        : type === "terraform"
+        ? "tf"
+        : type === "dockerfile"
+        ? "Dockerfile"
+        : "txt";
+    const content =
+      mode === "chat"
+        ? chatHistory.map((m) => `${m.role}: ${m.content}`).join("\n")
+        : activeTab === "command"
+        ? code
+        : explanation;
+    const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = `${type}-output.${fileType}`;
+    link.download = `${type}-output.${ext}`;
     link.click();
   };
 
@@ -110,7 +153,17 @@ export default function PromptForm() {
         </div>
       </form>
 
-      {(code || explanation) && (
+      {/* Chat History View */}
+      {mode === "chat" && chatHistory.length > 0 && (
+        <div className="mt-6 bg-[#0f0f1a] border border-slate-700 rounded-xl shadow-xl p-5 space-y-4">
+          {chatHistory.map((msg, i) => (
+            <ChatMessage key={i} role={msg.role} text={msg.content} />
+          ))}
+        </div>
+      )}
+
+      {/* Command Mode Output View */}
+      {mode === "command" && (code || explanation) && (
         <div className="mt-10">
           <div className="bg-[#0f0f1a] border border-slate-700 rounded-xl shadow-xl p-5">
             <div className="flex items-center gap-3 mb-4">
