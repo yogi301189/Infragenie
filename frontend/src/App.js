@@ -7,7 +7,7 @@ import ErrorCheckCard from './components/ErrorCheckCard';
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import { AuthProvider } from "./context/AuthContext";
-import Features from "./pages/Features";
+
 function App() {
   return (
     <Router>
@@ -19,14 +19,15 @@ function App() {
             <>
               <LandingPage />
               <section id="prompt" className="bg-slate-900 py-24 px-4">
-                <PromptForm />
-<ErrorCheckCard />
+
               </section>
             </>
           }
         />
 	<Route path="/features" element={<Features />} />
-	
+	<AuthProvider>
+  <App />
+</AuthProvider>
         {/* Docs Route */}
         <Route path="/docs" element={<Docs />} />
 <Route path="/login" element={<Login />} />
