@@ -6,7 +6,7 @@ from openai_utils import (
     generate_terraform_code,
     generate_aws_command,
     generate_dockerfile_code,
-    _chat_with_openai,  # Needed for explanation and error check
+    _chat_with_openai, chat_with_context # Needed for explanation and error check
 )
 
 app = FastAPI()
@@ -32,6 +32,10 @@ class CodeRequest(BaseModel):
 
 class PromptOnly(BaseModel):
     prompt: str
+
+class ChatRequest(BaseModel):
+    messages: List[Dict[str, str]]
+    type: str  # e.g., "kubernetes", "terraform", "dockerfile"
 
 class ErrorCheckRequest(BaseModel):
     code: str
@@ -93,3 +97,6 @@ def check_error(request: ErrorCheckRequest):
 
     response = _chat_with_openai(system_msg, request.code)
     return {"corrected": response}
+@app.post("/chat")
+def chat_conversational(request: ChatRequest):
+    return {"response": chat_with_context(request.messages, request.type)}
