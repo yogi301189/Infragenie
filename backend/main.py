@@ -32,19 +32,30 @@ class PromptOnly(BaseModel):
 
 @app.post("/generate")
 def generate_code(request: CodeRequest):
+    # Generate output code only
     if request.type == "kubernetes":
-        code, explanation = generate_k8s_yaml(request.prompt, request.mode)
+        output = generate_k8s_yaml(request.prompt)
     elif request.type == "terraform":
-        code, explanation = generate_terraform_code(request.prompt, request.mode)
+        output = generate_terraform_code(request.prompt)
     elif request.type == "dockerfile":
-        code, explanation = generate_dockerfile_code(request.prompt, request.mode)
+        output = generate_dockerfile_code(request.prompt)
     else:
         raise HTTPException(status_code=400, detail="Invalid type")
 
+    # Mode-specific logic
+    if request.mode == "chat":
+        explanation = _chat_with_openai(
+            f"You are an expert in {request.type}. Explain the following {request.type} configuration:",
+            output
+        )
+    else:
+        explanation = "No explanation available in command mode."
+
     return {
-        "code": code,
+        "code": output,
         "explanation": explanation
     }
+
 
 @app.post("/aws-generate")
 def aws_generate(request: PromptOnly):
