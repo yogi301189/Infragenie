@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LandingPage from "./LandingPage";
 import PromptForm from "./PromptForm";
 import Docs from "./pages/Docs"; // Make sure Docs.jsx is inside /src/pages
+import ErrorCheckCard from './components/ErrorCheckCard';
 
 function App() {
   return (
