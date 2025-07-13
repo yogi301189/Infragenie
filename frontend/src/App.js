@@ -7,7 +7,7 @@ import ErrorCheckCard from './components/ErrorCheckCard';
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import { AuthProvider } from "./context/AuthContext";
-
+import Features from "./pages/Features";
 function App() {
   return (
     <Router>
