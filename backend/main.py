@@ -64,3 +64,20 @@ def aws_generate(request: PromptOnly):
 
     result = generate_aws_command(request.prompt)
     return result
+class ErrorCheckRequest(BaseModel):
+    code: str
+    type: str  # "kubernetes", "terraform", or "dockerfile"
+
+@app.post("/check-error")
+def check_error(request: ErrorCheckRequest):
+    if not request.code.strip():
+        raise HTTPException(status_code=400, detail="Code is required")
+
+    system_msg = (
+        f"You are an expert in {request.type}. "
+        "Check the following code for errors. "
+        "Fix the errors and show the corrected code with comments starting with # explaining what was fixed."
+    )
+    response = _chat_with_openai(system_msg, request.code)
+
+    return {"corrected": response}
