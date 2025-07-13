@@ -1,4 +1,5 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
+from usage_limiter import enforce_limits
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from openai_utils import (
@@ -44,20 +45,22 @@ class ErrorCheckRequest(BaseModel):
 # ---------- Main Routes ----------
 
 @app.post("/generate")
-def generate_code(request: CodeRequest):
-    if request.type == "kubernetes":
-        output = generate_k8s_yaml(request.prompt)
-    elif request.type == "terraform":
-        output = generate_terraform_code(request.prompt)
-    elif request.type == "dockerfile":
-        output = generate_dockerfile_code(request.prompt)
+async def generate_code(request_data: CodeRequest, request: Request):
+    await enforce_limits(request, "code")
+
+    if request_data.type == "kubernetes":
+        output = generate_k8s_yaml(request_data.prompt)
+    elif request_data.type == "terraform":
+        output = generate_terraform_code(request_data.prompt)
+    elif request_data.type == "dockerfile":
+        output = generate_dockerfile_code(request_data.prompt)
     else:
         raise HTTPException(status_code=400, detail="Invalid type")
 
     # Explanation only for chat mode
-    if request.mode == "chat":
+    if request_data.mode == "chat":
         explanation = _chat_with_openai(
-            f"You are an expert in {request.type}. Explain the following {request.type} configuration:",
+            f"You are an expert in {request_data.type}. Explain the following {request_data.type} configuration:",
             output
         )
     else:
@@ -77,12 +80,14 @@ def aws_generate(request: PromptOnly):
     return result
 
 @app.post("/check-error")
-def check_error(request: ErrorCheckRequest):
-    if not request.code.strip():
+async def check_error(request_data: ErrorCheckRequest, request: Request):
+    await enforce_limits(request, "error")
+
+    if not request_data.code.strip():
         raise HTTPException(status_code=400, detail="Code is required")
 
     # Python-specific linting logic
-    if request.type == "python":
+    if request_data.type == "python":
         system_msg = (
             "You are a Python linter and fixer. "
             "Check the following Python code for errors, bad practices, or missing imports. "
@@ -90,13 +95,16 @@ def check_error(request: ErrorCheckRequest):
         )
     else:
         system_msg = (
-            f"You are an expert in {request.type}. "
+            f"You are an expert in {request_data.type}. "
             "Check the following code for errors. "
             "Fix the errors and show the corrected code with comments starting with # explaining what was fixed."
         )
 
-    response = _chat_with_openai(system_msg, request.code)
+    response = _chat_with_openai(system_msg, request_data.code)
     return {"corrected": response}
+
 @app.post("/chat")
-def chat_conversational(request: ChatRequest):
-    return {"response": chat_with_context(request.messages, request.type)}
+async def chat_conversational(request_data: ChatRequest, request: Request):
+    await enforce_limits(request, "chat")
+
+    return {"response": chat_with_context(request_data.messages, request_data.type)}
