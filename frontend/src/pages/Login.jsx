@@ -4,7 +4,7 @@ import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
-
+import { Link } from "react-router-dom";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -44,8 +44,8 @@ export default function Login() {
           <Button type="submit" className="w-full">Login</Button>
         </form>
         <p className="text-slate-400 text-sm mt-4 text-center">
-          Don’t have an account? <a href="/signup" className="text-indigo-400 underline">Sign up</a>
-        </p>
+  Don’t have an account? <Link to="/signup" className="text-indigo-400 underline">Sign up</Link>
+</p>
       </div>
     </div>
   );

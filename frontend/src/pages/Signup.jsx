@@ -5,6 +5,7 @@ import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
+import { Link } from "react-router-dom";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
@@ -57,8 +58,8 @@ export default function Signup() {
           <Button type="submit" className="w-full">Sign Up</Button>
         </form>
         <p className="text-slate-400 text-sm mt-4 text-center">
-          Already have an account? <a href="/login" className="text-indigo-400 underline">Login</a>
-        </p>
+  Already have an account? <Link to="/login" className="text-indigo-400 underline">Login</Link>
+</p>
       </div>
     </div>
   );
