@@ -119,8 +119,8 @@ export default function PromptForm() {
                   type === "kubernetes"
                     ? "/icons/k8s.svg"
                     : type === "terraform"
-                    ? "/icons/terraform-icon.svg"
-                    : "/icons/aws-icon.svg"
+                    ? "/icons/tform.svg"
+                    : "/icons/docker.svg"
                 }
                 alt={type}
                 className="h-6 w-6"
