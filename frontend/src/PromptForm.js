@@ -48,6 +48,17 @@ export default function PromptForm() {
     setCopied(true);
     setTimeout(() => setCopied(false), 1500);
   };
+<div className="flex items-center gap-4 mb-4">
+  <label className="text-white font-medium">Mode:</label>
+  <select
+    value={mode}
+    onChange={(e) => setMode(e.target.value)}
+    className="bg-slate-800 text-white border border-slate-600 p-2 rounded"
+  >
+    <option value="command">Command</option>
+    <option value="chat">Chat</option>
+  </select>
+</div>
 
   return (
     <div className="max-w-3xl mx-auto px-4">
