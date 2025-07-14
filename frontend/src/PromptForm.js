@@ -3,6 +3,8 @@ import { Button } from "./components/ui/button";
 import { Textarea } from "./components/ui/textarea";
 import { Copy, Download, Loader2 } from "lucide-react";
 import ChatMessage from "./components/ChatMessage";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 export default function PromptForm() {
   const [prompt, setPrompt] = useState("");
@@ -11,7 +13,7 @@ export default function PromptForm() {
   const [activeTab, setActiveTab] = useState("command");
   const [code, setCode] = useState("");
   const [explanation, setExplanation] = useState("");
-  const [chatHistory, setChatHistory] = useState([]); // 🧠 NEW
+  const [chatHistory, setChatHistory] = useState([]);
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -36,10 +38,8 @@ export default function PromptForm() {
           body: JSON.stringify({ prompt, type, mode }),
         });
         const data = await res.json();
-console.log("AI response:", data);
         const rawCode = Array.isArray(data.code) ? data.code.join("\n") : data.code;
-setCode(extractCodeBlock(rawCode) || "No command generated.");
-
+        setCode(extractCodeBlock(rawCode) || "No command generated.");
         setExplanation(data.explanation?.trim() || "No explanation available.");
       } catch (error) {
         setCode("Error generating response. Please try again.");
@@ -48,7 +48,6 @@ setCode(extractCodeBlock(rawCode) || "No command generated.");
         setLoading(false);
       }
     } else {
-      // 💬 Chat mode
       const newUserMsg = { role: "user", content: prompt };
       const updatedMessages = [...chatHistory, newUserMsg];
 
@@ -61,7 +60,6 @@ setCode(extractCodeBlock(rawCode) || "No command generated.");
 
         const data = await res.json();
         const assistantMsg = { role: "assistant", content: data?.response || "❌ No reply from AI." };
-
         setChatHistory([...updatedMessages, assistantMsg]);
         setPrompt("");
       } catch (error) {
@@ -108,6 +106,15 @@ setCode(extractCodeBlock(rawCode) || "No command generated.");
     link.href = URL.createObjectURL(blob);
     link.download = `${type}-output.${ext}`;
     link.click();
+  };
+
+  const getSyntaxLang = () => {
+    switch (type) {
+      case "kubernetes": return "yaml";
+      case "terraform": return "hcl";
+      case "dockerfile": return "docker";
+      default: return "bash";
+    }
   };
 
   return (
@@ -157,7 +164,6 @@ setCode(extractCodeBlock(rawCode) || "No command generated.");
         </div>
       </form>
 
-      {/* Chat History View */}
       {mode === "chat" && chatHistory.length > 0 && (
         <div className="mt-6 bg-[#0f0f1a] border border-slate-700 rounded-xl shadow-xl p-5 space-y-4">
           {chatHistory.map((msg, i) => (
@@ -166,7 +172,6 @@ setCode(extractCodeBlock(rawCode) || "No command generated.");
         </div>
       )}
 
-      {/* Command Mode Output View */}
       {mode === "command" && (code || explanation) && (
         <div className="mt-10">
           <div className="bg-[#0f0f1a] border border-slate-700 rounded-xl shadow-xl p-5">
@@ -188,7 +193,7 @@ setCode(extractCodeBlock(rawCode) || "No command generated.");
             <div className="flex gap-6 text-sm border-b border-slate-700 pb-2 mb-4">
               <button
                 onClick={() => setActiveTab("command")}
-                className={`${
+                className={`$ {
                   activeTab === "command"
                     ? "text-indigo-400 border-b-2 border-indigo-400"
                     : "text-slate-400"
@@ -198,7 +203,7 @@ setCode(extractCodeBlock(rawCode) || "No command generated.");
               </button>
               <button
                 onClick={() => setActiveTab("explanation")}
-                className={`${
+                className={`$ {
                   activeTab === "explanation"
                     ? "text-indigo-400 border-b-2 border-indigo-400"
                     : "text-slate-400"
@@ -209,9 +214,13 @@ setCode(extractCodeBlock(rawCode) || "No command generated.");
             </div>
 
             <div className="relative bg-[#161622] text-slate-300 text-sm font-mono p-4 rounded-md">
-              <pre className="whitespace-pre-wrap">
-                {activeTab === "command" ? code : explanation}
-              </pre>
+              {activeTab === "command" ? (
+                <SyntaxHighlighter language={getSyntaxLang()} style={oneDark} wrapLongLines>
+                  {code}
+                </SyntaxHighlighter>
+              ) : (
+                <pre className="whitespace-pre-wrap">{explanation}</pre>
+              )}
 
               <div className="absolute top-3 right-3 flex gap-2">
                 <button

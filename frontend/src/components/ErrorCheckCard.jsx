@@ -2,14 +2,15 @@ import React, { useState } from "react";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { Copy, Download, Loader2 } from "lucide-react";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
-// Auto-detection helper
 function detectLanguage(code = "") {
   if (/resource\s+".*"\s+".*"\s+\{/.test(code)) return "terraform";
-  if (/apiVersion|kind:|metadata:/.test(code)) return "kubernetes";
+  if (/apiVersion|kind:|metadata:/.test(code)) return "yaml"; // for kubernetes
   if (/FROM|CMD|EXPOSE/.test(code)) return "dockerfile";
   if (/def\s|\bprint\(|import\s/.test(code)) return "python";
-  return "kubernetes";
+  return "text";
 }
 
 export default function ErrorCheckCard() {
@@ -38,7 +39,6 @@ export default function ErrorCheckCard() {
       const data = await res.json();
       setCorrected(data.corrected || "No output returned");
 
-      // Compare after cleaning spaces
       const cleanedOriginal = code.trim().replace(/\s+/g, " ");
       const cleanedCorrected = data.corrected.trim().replace(/\s+/g, " ");
       setNoErrors(cleanedOriginal === cleanedCorrected);
@@ -79,7 +79,6 @@ export default function ErrorCheckCard() {
     <div className="max-w-3xl mx-auto px-4 py-10">
       <h2 className="text-xl font-bold text-white mb-4">🛠️ Error Check Assistant</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Language Selector + Auto Toggle */}
         <div className="flex items-center gap-4">
           <label className="text-white font-medium">Language:</label>
           <select
@@ -110,7 +109,6 @@ export default function ErrorCheckCard() {
           )}
         </div>
 
-        {/* Input area */}
         <Textarea
           rows={6}
           placeholder="Paste your code here to check for errors..."
@@ -134,10 +132,15 @@ export default function ErrorCheckCard() {
         </Button>
       </form>
 
-      {/* Output section */}
       {corrected && (
         <div className="bg-[#161622] text-sm text-slate-200 font-mono mt-8 p-4 rounded-xl border border-slate-700 relative">
-          <pre className="whitespace-pre-wrap">{corrected}</pre>
+          <SyntaxHighlighter
+            language={type === "kubernetes" ? "yaml" : type}
+            style={atomOneDark}
+            customStyle={{ background: "transparent", padding: 0 }}
+          >
+            {corrected}
+          </SyntaxHighlighter>
 
           <div className="absolute top-3 right-3 flex gap-2">
             <button onClick={handleCopy} className="text-slate-400 hover:text-white">
