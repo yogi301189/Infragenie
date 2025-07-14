@@ -3,7 +3,7 @@ import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { Copy, Download, Loader2 } from "lucide-react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 function detectLanguage(code = "") {
   if (/resource\s+".*"\s+".*"\s+\{/.test(code)) return "terraform";
