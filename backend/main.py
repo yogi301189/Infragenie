@@ -105,6 +105,11 @@ async def check_error(request_data: ErrorCheckRequest, request: Request):
 
 @app.post("/chat")
 async def chat_conversational(request_data: ChatRequest, request: Request):
-    await enforce_limits(request, "chat")
+    await enforce_limits(request, "chat")  # Optional: only if you have it
 
-    return {"response": chat_with_context(request_data.messages, request_data.type)}
+    try:
+        reply = chat_with_context(request_data.messages, request_data.type)
+        return {"response": reply}
+    except Exception as e:
+        print("❌ Chat failed:", e)
+        return {"response": "❌ Error from OpenAI"}
