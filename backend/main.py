@@ -9,6 +9,7 @@ from openai_utils import (
     generate_dockerfile_code,
     _chat_with_openai, chat_with_context # Needed for explanation and error check
 )
+from typing import List, Dict
 
 app = FastAPI()
 
