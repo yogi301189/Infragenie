@@ -108,7 +108,7 @@ async def chat_conversational(request_data: ChatRequest, request: Request):
     await enforce_limits(request, "chat")  # Optional: only if you have it
 
     try:
-        reply = chat_with_context(request_data.messages, request_data.type)
+        reply = await chat_with_context(request_data.messages, request_data.type)
         return {"response": reply}
     except Exception as e:
         print("❌ Chat failed:", e)

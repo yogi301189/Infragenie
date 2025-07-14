@@ -87,18 +87,19 @@ def generate_aws_command(prompt):
             "code": "",
             "explanation": f"Failed to parse AWS response: {str(e)}\n\nRaw content: {content}"
         }
-def chat_with_context(messages, code_type="kubernetes"):
+async def chat_with_context(messages, code_type="kubernetes"):
     system_msg = {
-        "kubernetes": "You are an expert in Kubernetes. Help the user with YAML, deployments, and k8s concepts.",
-        "terraform": "You are an expert in Terraform. Help the user write infrastructure-as-code using HCL.",
-        "dockerfile": "You are a Dockerfile expert. Help the user create optimized Dockerfiles.",
+        "kubernetes": "You are an expert in Kubernetes...",
+        "terraform": "You are an expert in Terraform...",
+        "dockerfile": "You are a Dockerfile expert..."
     }.get(code_type.lower(), "You are a helpful DevOps assistant.")
 
     try:
-        response = client.chat.completions.create(
+        response = await client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[{"role": "system", "content": system_msg}] + messages,
         )
         return response.choices[0].message.content.strip()
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"OpenAI API error: {str(e)}")
+
