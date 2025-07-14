@@ -38,12 +38,12 @@ export default function LandingPage() {
               Docs
             </a>
             <a
-              href="https://github.com/yogi301189/infragenie"
+              href="/docs"
               target="_blank"
               rel="noreferrer"
               className="flex items-center gap-1 hover:text-white transition"
             >
-              GitHub
+              GitHub (Only for premium users)
             </a>
           </nav>
 
