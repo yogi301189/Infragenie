@@ -1,11 +1,11 @@
 import os
 import json
-from openai import OpenAI
+from openai import AsyncOpenAI  
 from dotenv import load_dotenv
 from fastapi import HTTPException
 
 load_dotenv()
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+client = AsyncOpenAI (api_key=os.getenv("OPENAI_API_KEY"))
 
 # 🔧 Generic OpenAI caller
 def _chat_with_openai(system_msg: str, prompt: str):
