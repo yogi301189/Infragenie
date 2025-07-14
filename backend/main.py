@@ -115,3 +115,7 @@ async def chat_conversational(request_data: ChatRequest, request: Request):
     except Exception as e:
         print("❌ Chat failed:", e)
         return {"response": "❌ Error from OpenAI"}
+@app.get("/debug")
+def debug():
+    return {"routes": [route.path for route in app.routes]}
+
