@@ -32,7 +32,7 @@ export default function PromptForm() {
       setExplanation("");
       setActiveTab("command");
       try {
-        const res = await fetch("https://infragenie-backend.onrender.com//generate", {
+        const res = await fetch("https://infragenie-backend.onrender.com/generate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ prompt, type, mode }),
