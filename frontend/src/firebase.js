@@ -5,7 +5,7 @@ import { getFirestore } from "firebase/firestore";
 // Firebase config from environment variables
 const firebaseConfig = {
   apiKey: "AIzaSyBWjcLCx7vio8uxrFrWsJjFVQwgRTraedU",
-  authDomain: "getinfragenie.firebaseapp.com",
+  authDomain: "infragenie-4e256.firebaseapp.com",
   projectId: "infragenie-4e256",
   storageBucket: "infragenie-4e256.firebasestorage.app",
   messagingSenderId: "928280669851",
