@@ -77,6 +77,7 @@ async def generate_aws_command(prompt):
             ),
             prompt=prompt
         )
+raw = re.sub(r'("\s*)("explanation")', r',\1\2', raw)
         return json.loads(raw)
     except json.JSONDecodeError as jde:
         return {
