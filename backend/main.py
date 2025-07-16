@@ -1,3 +1,4 @@
+from fastapi.responses import JSONResponse
 from fastapi import FastAPI, HTTPException, Request
 from usage_limiter import enforce_limits
 from pydantic import BaseModel
@@ -70,7 +71,7 @@ async def aws_generate(request: PromptOnly):
         raise HTTPException(status_code=400, detail="Prompt is required")
 
     result = await generate_aws_command(request.prompt)
-    return result
+    return JSONResponse(content=result) 
 
 @app.post("/check-error")
 async def check_error(request_data: ErrorCheckRequest, request: Request):

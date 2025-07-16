@@ -1,12 +1,17 @@
 import os
 import json
 import re
+import logging
 from openai import AsyncOpenAI  
 from dotenv import load_dotenv
 from fastapi import HTTPException
 
 load_dotenv()
 client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+# Optional: enable this if you want logs in Render logs
+# logging.basicConfig(level=logging.INFO)
+# logger = logging.getLogger(__name__)
 
 # 🔧 Generic OpenAI caller
 async def _chat_with_openai(system_msg: str, prompt: str):
@@ -63,24 +68,23 @@ async def generate_dockerfile_code(prompt, mode="command"):
 # ✅ AWS CLI handler
 async def generate_aws_command(prompt):
     try:
-        response = await client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {
-                    "role": "system",
-                    "content": (
-                        "You are an expert in AWS CLI. "
-                        "Always return a JSON object with two fields: 'code' and 'explanation'. "
-                        "Format multi-step commands in proper multiline syntax using backslashes (\\) for line continuation. "
-                        "Avoid semicolons (;) unless required. Do NOT return markdown or code fences."
-                    ),
-                },
-                {"role": "user", "content": prompt},
-            ],
+        raw = await _chat_with_openai(
+            system_msg=(
+                "You are an expert in AWS CLI. "
+                "Always return a JSON object with two fields: 'code' and 'explanation'. "
+                "Format multi-step commands in proper multiline syntax using backslashes (\\) for line continuation. "
+                "Avoid semicolons (;) unless required. Do NOT return markdown or code fences."
+            ),
+            prompt=prompt
         )
-        content = response.choices[0].message.content.strip()
-        return json.loads(content)
+        return json.loads(raw)
+    except json.JSONDecodeError as jde:
+        return {
+            "code": "",
+            "explanation": f"Invalid JSON returned by OpenAI: {str(jde)}\nRaw: {raw}"
+        }
     except Exception as e:
+        # logger.exception("AWS command generation failed")
         return {
             "code": "",
             "explanation": f"Failed to parse AWS response: {str(e)}"
