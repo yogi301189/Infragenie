@@ -8,6 +8,8 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import { AuthProvider } from "./context/AuthContext";
 import Features from "./pages/Features";
+import PromptHistory from "./components/PromptHistory";
+
 function App() {
   return (
     <Router>
@@ -30,6 +32,8 @@ function App() {
         <Route path="/docs" element={<Docs />} />
 <Route path="/login" element={<Login />} />
 <Route path="/signup" element={<Signup />} />
+<Route path="/history" element={<PromptHistory />} />
+
       </Routes>
     </Router>
   );

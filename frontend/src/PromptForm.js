@@ -6,6 +6,9 @@ import ChatMessage from "./components/ChatMessage";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import SkeletonBlock from "./components/SkeletonBlock";
+import { db, auth } from "../firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 export default function PromptForm() {
   const [prompt, setPrompt] = useState("");
@@ -18,6 +21,8 @@ export default function PromptForm() {
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState(false);
+  const [user] = useAuthState(auth);
+
 
   const resultRef = useRef(null);
 
@@ -50,6 +55,7 @@ export default function PromptForm() {
       } catch (err) {
         setCode("");
         setExplanation("");
+	await savePromptToFirestore();
         setError(true);
       } finally {
         setLoading(false);
@@ -71,6 +77,7 @@ export default function PromptForm() {
         setChatHistory([...updatedMessages, {
           role: "assistant", content: "❌ Error processing your message.",
         }]);
+	await savePromptToFirestore();
         setError(true);
       } finally {
         setLoading(false);
@@ -121,7 +128,21 @@ export default function PromptForm() {
       default: return "bash";
     }
   };
+const savePromptToFirestore = async () => {
+  if (!user) return;
 
+  try {
+    await addDoc(collection(db, "prompts"), {
+      userId: user.uid,
+      prompt,
+      type,
+      mode,
+      createdAt: serverTimestamp()
+    });
+  } catch (err) {
+    console.error("Error saving prompt:", err);
+  }
+};
   return (
     <div className="max-w-3xl mx-auto px-4">
       <form onSubmit={handleSubmit} className="space-y-4">
