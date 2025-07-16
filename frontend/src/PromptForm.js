@@ -32,7 +32,7 @@ export default function PromptForm() {
       setExplanation("");
       setActiveTab("command");
       try {
-        const res = await fetch(`${process.env.REACT_APP_API_URL}/generate`, {
+        const res = await fetch("https://infragenie-backend.onrender.com//generate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ prompt, type, mode }),
@@ -52,7 +52,7 @@ export default function PromptForm() {
       const updatedMessages = [...chatHistory, newUserMsg];
 
       try {
-        const res = await fetch(`${process.env.REACT_APP_API_URL}/chat`, {
+        const res = await fetch("https://infragenie-backend.onrender.com/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ messages: updatedMessages, type }),
