@@ -234,8 +234,8 @@ export default function PromptForm() {
                       </SyntaxHighlighter>
                      {(code === "" || code === "No command generated." || error) && (
   <div className="mt-2 flex flex-col gap-2 items-start">
-    <div className="text-xs text-yellow-400 bg-yellow-900 px-3 py-1 inline-block rounded">
-      ⚠️ {error ? "Something went wrong. Please try again." : "No command generated."}
+    <div className="text-xs text-white-400 bg-white-900 px-3 py-1 inline-block rounded">
+       {error ? "Something went wrong. Please try again." : "No command generated."}
     </div>
 
     {/* ✅ Only shows when error is true */}
