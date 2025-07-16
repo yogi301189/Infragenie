@@ -8,9 +8,9 @@ load_dotenv()
 client = AsyncOpenAI (api_key=os.getenv("OPENAI_API_KEY"))
 
 # 🔧 Generic OpenAI caller
-def _chat_with_openai(system_msg: str, prompt: str):
+async def _chat_with_openai(system_msg: str, prompt: str):
     try:
-        response = client.chat.completions.create(
+        response = await client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": system_msg},
