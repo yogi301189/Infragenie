@@ -232,20 +232,25 @@ export default function PromptForm() {
                       <SyntaxHighlighter language={getSyntaxLang()} style={oneDark} wrapLongLines>
                         {code}
                       </SyntaxHighlighter>
-                      {(code === "" || code === "No command generated." || error) && (
-                        <div className="mt-2 flex flex-col gap-2 items-start">
-                          <div className="text-xs text-yellow-400 bg-yellow-900 px-3 py-1 inline-block rounded">
-                            ⚠️ {error ? "Something went wrong. Please try again." : "No command generated."}
-                          </div>
-                          <Button
-                            size="sm"
-                            className="bg-red-600 hover:bg-red-700 text-white text-xs"
-                            onClick={handleSubmit}
-                          >
-                            🔁 Retry
-                          </Button>
-                        </div>
-                      )}
+                     {(code === "" || code === "No command generated." || error) && (
+  <div className="mt-2 flex flex-col gap-2 items-start">
+    <div className="text-xs text-yellow-400 bg-yellow-900 px-3 py-1 inline-block rounded">
+      ⚠️ {error ? "Something went wrong. Please try again." : "No command generated."}
+    </div>
+
+    {/* ✅ Only shows when error is true */}
+    {error && (
+      <Button
+        size="sm"
+        className="bg-red-600 hover:bg-red-700 text-white text-xs"
+        onClick={handleSubmit}
+      >
+        🔁 Retry
+      </Button>
+    )}
+  </div>
+)}
+
                     </>
                   ) : (
                     <>
