@@ -50,27 +50,19 @@ async def generate_code(request_data: CodeRequest, request: Request):
     await enforce_limits(request, "code")
 
     if request_data.type == "kubernetes":
-        output = generate_k8s_yaml(request_data.prompt)
+        code, explanation = await generate_k8s_yaml(request_data.prompt, request_data.mode)
     elif request_data.type == "terraform":
-        output = generate_terraform_code(request_data.prompt)
+        code, explanation = await generate_terraform_code(request_data.prompt, request_data.mode)
     elif request_data.type == "dockerfile":
-        output = generate_dockerfile_code(request_data.prompt)
+        code, explanation = await generate_dockerfile_code(request_data.prompt, request_data.mode)
     else:
         raise HTTPException(status_code=400, detail="Invalid type")
 
-    # Explanation only for chat mode
-    if request_data.mode == "chat":
-        explanation = await _chat_with_openai(
-            f"You are an expert in {request_data.type}. Explain the following {request_data.type} configuration:",
-            output
-        )
-    else:
-        explanation = "No explanation available in command mode."
-
     return {
-        "code": output,
-        "explanation": explanation
+        "code": code,
+        "explanation": explanation or "No explanation available in command mode."
     }
+
 
 @app.post("/aws-generate")
 def aws_generate(request: PromptOnly):
