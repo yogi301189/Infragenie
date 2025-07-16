@@ -65,11 +65,11 @@ async def generate_code(request_data: CodeRequest, request: Request):
 
 
 @app.post("/aws-generate")
-def aws_generate(request: PromptOnly):
+async def aws_generate(request: PromptOnly):
     if not request.prompt.strip():
         raise HTTPException(status_code=400, detail="Prompt is required")
 
-    result = generate_aws_command(request.prompt)
+    result = await generate_aws_command(request.prompt)
     return result
 
 @app.post("/check-error")
