@@ -6,7 +6,7 @@ import ChatMessage from "./components/ChatMessage";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import SkeletonBlock from "./components/SkeletonBlock";
-import { db, auth } from "../firebase";
+import { db, auth } from "./firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
