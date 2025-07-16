@@ -19,6 +19,7 @@
     "postcss": "^8.x",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-firebase-hooks": "^5.1.1",
     "react-router-dom": "^7.6.3",
     "react-scripts": "^5.0.1",
     "react-scroll": "^1.9.3",
