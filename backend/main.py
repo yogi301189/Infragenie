@@ -60,7 +60,7 @@ async def generate_code(request_data: CodeRequest, request: Request):
 
     # Explanation only for chat mode
     if request_data.mode == "chat":
-        explanation = _chat_with_openai(
+        explanation = await _chat_with_openai(
             f"You are an expert in {request_data.type}. Explain the following {request_data.type} configuration:",
             output
         )
@@ -101,7 +101,7 @@ async def check_error(request_data: ErrorCheckRequest, request: Request):
             "Fix the errors and show the corrected code with comments starting with # explaining what was fixed."
         )
 
-    response = _chat_with_openai(system_msg, request_data.code)
+    response = await _chat_with_openai(system_msg, request_data.code)
     return {"corrected": response}
 
 @app.post("/chat")
