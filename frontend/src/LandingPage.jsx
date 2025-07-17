@@ -2,7 +2,7 @@ import { useAuth } from "./context/AuthContext";
 import React, { useState } from "react";
 import { Button } from "./components/ui/button";
 import { Card, CardContent } from "./components/ui/card";
-import { Copy } from "lucide-react";
+import { Copy, Maximize2, Minimize2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { Container } from "./components/ui/container";
 import { Link as ScrollLink, animateScroll as scroll } from "react-scroll";
@@ -20,6 +20,7 @@ export default function LandingPage() {
   const [showMenu, setShowMenu] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isFullScreen, setIsFullScreen] = useState(false);
 
 
   return (
@@ -158,11 +159,23 @@ export default function LandingPage() {
             </div>
           </div>
           {/* Prompt Form Section */}
-          <section id="prompt" className="py-16 md:py-24 px-4 bg-[#0f0f1a] border-y border-slate-800">
-            <Container>
-              <PromptForm />
-            </Container>
-          </section>
+          {/* Prompt Form Section */}
+<section id="prompt" className="relative py-16 md:py-24 bg-[#0f0f1a] border-y border-slate-800">
+  {/* Fullscreen Toggle Button */}
+  <button
+    onClick={() => setIsFullScreen(!isFullScreen)}
+    className="absolute top-4 right-4 z-10 text-slate-400 hover:text-white transition"
+    title={isFullScreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+  >
+    {isFullScreen ? <Minimize2 size={20} /> : <Maximize2 size={20} />}
+  </button>
+
+  {/* Responsive Container */}
+  <div className={isFullScreen ? "w-full px-4" : "max-w-7xl mx-auto px-4"}>
+    <PromptForm />
+  </div>
+</section>
+
 
           {/* Right - Code Preview */}
           <motion.div
