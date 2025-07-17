@@ -1,23 +1,28 @@
 import React from "react";
 import { Bot, User } from "lucide-react";
 
-export default function ChatMessage({ role, text }) {
-  const isUser = role === "user";
+export default function ChatMessage({ role, text, isLast }) {
+  const [expanded, setExpanded] = useState(isLast); // only expand the last by default
+
+  const isLong = text.length > 300; // tweak length threshold as needed
+  const shouldCollapse = !expanded && isLong;
 
   return (
-    <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
-      <div
-        className={`max-w-[80%] px-4 py-2 rounded-xl text-sm leading-relaxed whitespace-pre-wrap ${
-          isUser
-            ? "bg-indigo-600 text-white rounded-br-none"
-            : "bg-slate-800 text-slate-100 rounded-bl-none"
-        }`}
-      >
-        <div className="flex items-center gap-2">
-          {isUser ? <User size={14} /> : <Bot size={14} />}
-          <span>{text}</span>
+    <div className={`flex ${role === 'user' ? 'justify-end' : 'justify-start'}`}>
+      <div className={`max-w-[80%] p-3 rounded-lg whitespace-pre-wrap ${role === 'user' ? 'bg-blue-600 text-white' : 'bg-zinc-800 text-gray-100'}`}>
+        <div>
+          {shouldCollapse ? `${text.slice(0, 300)}...` : text}
         </div>
+        {isLong && (
+          <button
+            onClick={() => setExpanded(!expanded)}
+            className="text-sm text-blue-400 mt-2 hover:underline"
+          >
+            {expanded ? "Show less" : "Show more"}
+          </button>
+        )}
       </div>
     </div>
   );
 }
+
