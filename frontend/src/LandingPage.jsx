@@ -163,7 +163,7 @@ export default function LandingPage() {
 <section id="prompt" className={`py-16 md:py-24 px-4 bg-[#0f0f1a] border-y border-slate-800 ${isFullScreen ? 'fixed inset-0 z-50 bg-[#0f0f1a] overflow-auto' : ''}`}>
   <Container>
     <div className="flex justify-between items-center mb-4">
-      <h2 className="text-2xl font-bold text-white">Prompt Generator</h2>
+      <h2 className="text-xl font-bold text-white">Start Typing. Genie is listening...</h2>
       <button
         className="bg-slate-800 text-sm text-white px-3 py-1 rounded hover:bg-slate-700"
         onClick={() => setIsFullScreen(prev => !prev)}
