@@ -9,6 +9,7 @@ import SkeletonBlock from "./components/SkeletonBlock";
 import { db, auth } from "./firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import ChatSection from "./components/ChatSection";
 
 export default function PromptForm() {
   const [prompt, setPrompt] = useState("");
@@ -22,7 +23,7 @@ export default function PromptForm() {
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState(false);
   const [user] = useAuthState(auth);
-
+  const [messages, setMessages] = useState([]);
 
   const resultRef = useRef(null);
 
@@ -193,12 +194,11 @@ const savePromptToFirestore = async () => {
       <div ref={resultRef} />
 
       {mode === "chat" && chatHistory.length > 0 && (
-        <div className="mt-6 bg-[#0f0f1a] border border-slate-700 rounded-xl shadow-xl p-5 space-y-4">
-          {chatHistory.map((msg, i) => (
-            <ChatMessage key={i} role={msg.role} text={msg.content} />
-          ))}
-        </div>
-      )}
+  <div className="mt-6">
+    <ChatSection messages={chatHistory} />
+  </div>
+)}
+
 
       {mode === "command" && (
         <div className="mt-10">
