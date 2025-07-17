@@ -160,21 +160,21 @@ export default function LandingPage() {
           </div>
           {/* Prompt Form Section */}
           {/* Prompt Form Section */}
-<section id="prompt" className="relative py-16 md:py-24 bg-[#0f0f1a] border-y border-slate-800">
-  {/* Fullscreen Toggle Button */}
-  <button
-    onClick={() => setIsFullScreen(!isFullScreen)}
-    className="absolute top-4 right-4 z-10 text-slate-400 hover:text-white transition"
-    title={isFullScreen ? "Exit Fullscreen" : "Enter Fullscreen"}
-  >
-    {isFullScreen ? <Minimize2 size={20} /> : <Maximize2 size={20} />}
-  </button>
-
-  {/* Responsive Container */}
-  <div className={isFullScreen ? "w-full px-4" : "max-w-7xl mx-auto px-4"}>
+<section id="prompt" className={`py-16 md:py-24 px-4 bg-[#0f0f1a] border-y border-slate-800 ${isFullScreen ? 'fixed inset-0 z-50 bg-[#0f0f1a] overflow-auto' : ''}`}>
+  <Container>
+    <div className="flex justify-between items-center mb-4">
+      <h2 className="text-2xl font-bold text-white">Prompt Generator</h2>
+      <button
+        className="bg-slate-800 text-sm text-white px-3 py-1 rounded hover:bg-slate-700"
+        onClick={() => setIsFullScreen(prev => !prev)}
+      >
+        {isFullScreen ? "Exit Full Screen" : "Full Screen"}
+      </button>
+    </div>
     <PromptForm />
-  </div>
+  </Container>
 </section>
+
 
 
           {/* Right - Code Preview */}
@@ -186,13 +186,17 @@ export default function LandingPage() {
         </Container>
       </section>
 
-      <section id="ErrorCheckCard" className="py-12 px-4 sm:px-6 lg:px-12 bg-transparent">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-2xl font-bold text-white mb-6 px-4">
-            <ErrorCheckCard />
-          </h2>
-        </div>
-      </section>
+      <section id="ErrorCheckCard" className="py-12 px-4 sm:px-6 lg:px-12 bg-transparent overflow-x-hidden">
+  <div className="max-w-7xl mx-auto">
+    <h2 className="text-2xl font-bold text-white mb-6 px-4">
+      Error Check Assistant
+    </h2>
+    <div className="px-4">
+      <ErrorCheckCard />
+    </div>
+  </div>
+</section>
+
 
       <section id="how-to-install" className="py-12 px-4 sm:px-6 lg:px-12 bg-transparent">
         <div className="max-w-7xl mx-auto px-4">
