@@ -30,8 +30,8 @@ export default function LandingPage() {
           >
             <img src="/logo.svg" alt="logo" className="h-12 w-12" /> 
             <span className="text-3xl font-semibold">
-            <span className="text-emerald-400">Infra</span>
-            <span className="text-blue-500">genie</span>
+            <span className="text-blue-400">Infra</span>
+            <span className="text-emerald-200">genie</span>
             </span>
           </button>
           <nav className="hidden md:flex items-center gap-6 text-slate-300">
