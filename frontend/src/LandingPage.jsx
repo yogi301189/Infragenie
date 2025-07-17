@@ -13,11 +13,14 @@ import HowToInstallCard from "./components/HowToInstallCard";
 import SeeInActionModal from "./components/SeeInActionModal";
 import ErrorCheckCard from "./components/ErrorCheckCard";
 import { Link as RouterLink } from "react-router-dom";
+import FeedbackForm from "./components/FeedbackForm";
 
 export default function LandingPage() {
   const { user, logout } = useAuth();
   const [showMenu, setShowMenu] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
 
   return (
     <div className="min-h-screen flex flex-col bg-[#0a0a12] text-white scroll-smooth">
@@ -48,9 +51,12 @@ export default function LandingPage() {
             </a>
           </nav>
           <div className="md:hidden">
-  <Button size="sm" onClick={() => setShowMenu(!showMenu)}>
-    Menu
-  </Button>
+  <button
+    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+    className="text-white focus:outline-none"
+  >
+    ☰
+  </button>
 </div>
 
 {/* Mobile Dropdown Menu */}
@@ -100,6 +106,15 @@ export default function LandingPage() {
           )}
         </Container>
       </header>
+      {isMobileMenuOpen && (
+  <div className="md:hidden bg-slate-900 px-6 py-4 space-y-4 text-slate-300 border-b border-slate-700">
+    <a href="/features" className="block hover:text-white">Features</a>
+    <a href="/docs" className="block hover:text-white">Docs</a>
+    <a href="/docs" className="block hover:text-white">GitHub (Premium)</a>
+    <RouterLink to="/login" className="block hover:text-white">Signup / Signin</RouterLink>
+  </div>
+)}
+
 
       {/* Hero Section */}
       <section id="hero" className="flex-1 py-24 md:py-32">
@@ -222,7 +237,7 @@ export default function LandingPage() {
           </motion.blockquote>
         </Container>
       </section>
-
+      <FeedbackForm />
       {/* Footer */}
       <footer className="border-t border-slate-700 py-8 bg-slate-900 text-slate-400 text-center text-sm px-4">
         <Container>
