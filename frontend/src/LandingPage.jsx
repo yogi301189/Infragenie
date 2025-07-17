@@ -47,6 +47,27 @@ export default function LandingPage() {
               GitHub (Only for premium users)
             </a>
           </nav>
+          <div className="md:hidden">
+  <Button size="sm" onClick={() => setShowMenu(!showMenu)}>
+    Menu
+  </Button>
+</div>
+
+{/* Mobile Dropdown Menu */}
+{showMenu && (
+  <div className="md:hidden flex flex-col gap-2 mt-2 text-slate-300">
+    <a href="/features" className="hover:text-white transition">Features</a>
+    <a href="/docs" className="hover:text-white transition">Docs</a>
+    <a href="/docs" target="_blank" rel="noreferrer" className="hover:text-white transition">
+      GitHub (Premium)
+    </a>
+    {!user && (
+      <RouterLink to="/login" className="text-white mt-2 underline">
+        Signup / Signin
+      </RouterLink>
+    )}
+  </div>
+)}
 
           {user ? (
             <div className="relative">
@@ -82,7 +103,8 @@ export default function LandingPage() {
 
       {/* Hero Section */}
       <section id="hero" className="flex-1 py-24 md:py-32">
-        <Container className="grid md:grid-cols-2 gap-12 items-center">
+        <Container className="grid md:grid-cols-2 gap-12 items-center px-4">
+
           {/* Left */}
           <div className="space-y-6 max-w-xl">
             <motion.h1
@@ -123,7 +145,7 @@ export default function LandingPage() {
             </div>
           </div>
           {/* Prompt Form Section */}
-          <section id="prompt" className="py-16 md:py-24 bg-[#0f0f1a] border-y border-slate-800">
+          <section id="prompt" className="py-16 md:py-24 px-4 bg-[#0f0f1a] border-y border-slate-800">
             <Container>
               <PromptForm />
             </Container>
@@ -147,7 +169,7 @@ export default function LandingPage() {
       </section>
 
       <section id="how-to-install" className="py-12 px-4 sm:px-6 lg:px-12 bg-transparent">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-2xl font-bold text-white mb-6">Get Started Quickly</h2>
           <div className="flex flex-col lg:flex-row gap-6 justify-center items-start">
             <AwsCard />
@@ -167,10 +189,10 @@ export default function LandingPage() {
       </section>
 
       {/* CTA */}
-      <section id="get-started" className="py-24 md:py-32 text-center">
+      <section id="get-started" className="py-24 md:py-32 text-center px-4">
         <Container>
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to automate your infra?</h2>
-          <p className="text-slate-300 mb-8 max-w-xl mx-auto">
+          <h2 className="text-3xl sm:text-3xl md:text-4xl font-bold mb-6">Ready to automate your infra?</h2>
+          <p className="text-slate-300 sm:text-lg mb-8 max-w-xl mx-auto">
             Start generating secure, production‑ready manifests in seconds.
           </p>
           <Button size="lg" className="text-lg px-8 py-6">Get Started Now</Button>
@@ -202,7 +224,7 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-slate-700 py-8 bg-slate-900 text-slate-400 text-center text-sm">
+      <footer className="border-t border-slate-700 py-8 bg-slate-900 text-slate-400 text-center text-sm px-4">
         <Container>
           <p>© {new Date().getFullYear()} Infragenie. All rights reserved.</p>
         </Container>
