@@ -114,10 +114,8 @@ export default function LandingPage() {
     <RouterLink to="/login" className="block hover:text-white">Signup / Signin</RouterLink>
   </div>
 )}
-
-
       {/* Hero Section */}
-      <section id="hero" className="flex-1 py-24 md:py-32">
+      <section id="hero" className="flex-1 py-16 md:py-24">
         <Container className="grid md:grid-cols-2 gap-12 items-center px-4">
 
           {/* Left */}
@@ -177,7 +175,7 @@ export default function LandingPage() {
 
       <section id="ErrorCheckCard" className="py-12 px-4 sm:px-6 lg:px-12 bg-transparent">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-2xl font-bold text-white mb-6">
+          <h2 className="text-2xl font-bold text-white mb-6 px-4">
             <ErrorCheckCard />
           </h2>
         </div>
