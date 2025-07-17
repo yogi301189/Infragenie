@@ -15,7 +15,7 @@ export default function ChatSection({ messages }) {
         <ChatMessage
     key={index}
     role={msg.role}
-    text={msg.text}
+    text={msg.content}
     isLast={index === messages.length - 1}
   />
       ))}
