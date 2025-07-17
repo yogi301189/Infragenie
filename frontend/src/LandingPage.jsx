@@ -115,7 +115,7 @@ export default function LandingPage() {
   </div>
 )}
       {/* Hero Section */}
-      <section id="hero" className="flex-1 py-16 md:py-24">
+      <section id="hero" className="flex-1 py-12 md:py-20">
         <Container className="grid md:grid-cols-2 gap-12 items-center px-4">
 
           {/* Left */}
