@@ -29,11 +29,8 @@ export default function LandingPage() {
             className="flex items-center gap-2 text-lg font-semibold cursor-pointer"
           >
             <img src="/logo.svg" alt="logo" className="h-12 w-12" /> 
-            <span className="text-3xl font-semibold">
-            <span className="text-blue-400">Infra</span>
-            <span className="text-emerald-200">genie</span>
-            </span>
-          </button>
+            <span className="text-3xl font-semibold bg-gradient-to-r from-blue-400 to-emerald-500 text-transparent bg-clip-text"></span>
+                     </button>
           <nav className="hidden md:flex items-center gap-6 text-slate-300">
             <a href="/features" className="hover:text-white transition">
               Features
