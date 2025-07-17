@@ -77,7 +77,7 @@ async def generate_aws_command(prompt):
             ),
             prompt=prompt
         )
-raw = re.sub(r'("\s*)("explanation")', r',\1\2', raw)
+        raw = re.sub(r'("\s*)("explanation")', r',\1\2', raw)
         return json.loads(raw)
     except json.JSONDecodeError as jde:
         return {
@@ -93,6 +93,13 @@ raw = re.sub(r'("\s*)("explanation")', r',\1\2', raw)
 
 # ✅ Chat-based contextual conversation
 async def chat_with_context(messages, code_type="kubernetes"):
+    # 🧠 Extract the latest prompt
+    prompt = messages[-1]["content"].lower().strip() if messages else ""
+
+    casual_greetings = ["hi", "hello", "hey", "how are you"]
+    if prompt in casual_greetings:
+        return "👋 Hello! I'm InfraGenie. Ask me to generate Kubernetes, Terraform, or Dockerfile configurations."
+
     system_msg = {
         "kubernetes": "You are an expert in Kubernetes...",
         "terraform": "You are an expert in Terraform...",
