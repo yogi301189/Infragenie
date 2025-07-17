@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Bot, User } from "lucide-react";
 
 export default function ChatMessage({ role, text, isLast }) {
