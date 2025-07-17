@@ -28,7 +28,9 @@ export default function LandingPage() {
             onClick={() => scroll.scrollToTop()}
             className="flex items-center gap-2 text-lg font-semibold cursor-pointer"
           >
-            <img src="/logo.svg" alt="logo" className="h-8 w-8" /> Infragenie
+            <img src="/logo.svg" alt="logo" className="h-8 w-8" /> 
+<span className="bg-gradient-to-r from-emerald-400 to-purple-500 text-transparent bg-clip-text">
+Infragenie </span>
           </button>
           <nav className="hidden md:flex items-center gap-6 text-slate-300">
             <a href="/features" className="hover:text-white transition">
