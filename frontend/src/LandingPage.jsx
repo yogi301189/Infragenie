@@ -160,7 +160,7 @@ export default function LandingPage() {
           </div>
           {/* Prompt Form Section */}
           {/* Prompt Form Section */}
-<section id="prompt" className={`py-16 md:py-24 px-4 bg-[#0f0f1a] border-y border-slate-800 ${isFullScreen ? 'fixed inset-0 z-50 bg-[#0f0f1a] overflow-auto' : ''}`}>
+<section id="prompt" className={`py-12 md:py-20 px-4 bg-[#0f0f1a] border-y border-slate-800 ${isFullScreen ? 'fixed inset-0 z-50 bg-[#0f0f1a] overflow-auto' : ''}`}>
   <Container>
     <div className="flex justify-between items-center mb-4">
       <h2 className="text-xl font-bold text-white">Start Typing. Genie is listening...</h2>
@@ -189,8 +189,7 @@ export default function LandingPage() {
       <section id="ErrorCheckCard" className="py-12 px-4 sm:px-6 lg:px-12 bg-transparent overflow-x-hidden">
   <div className="max-w-7xl mx-auto">
     <h2 className="text-2xl font-bold text-white mb-6 px-4">
-      Error Check Assistant
-    </h2>
+          </h2>
     <div className="px-4">
       <ErrorCheckCard />
     </div>
