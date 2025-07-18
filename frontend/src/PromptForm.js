@@ -23,6 +23,12 @@ export default function PromptForm() {
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState(false);
   const [user] = useAuthState(auth);
+  useEffect(() => {
+  if (user) {
+    localStorage.removeItem("promptCount");
+  }
+}, [user]);
+
   const [messages, setMessages] = useState([]);
 
   const resultRef = useRef(null);
@@ -36,6 +42,22 @@ export default function PromptForm() {
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
     if (!prompt.trim()) return;
+   const promptLimit = 10;
+const localPromptCount = Number(localStorage.getItem("promptCount") || 0);
+
+if (localPromptCount >= promptLimit && !user) {
+  window.showToast("You’ve used 10 free prompts. Please sign in to continue.");
+  setTimeout(() => window.location.href = "/login", 1500); // redirect after short delay
+  return;
+}
+
+if (!user && (localPromptCount === 7 || localPromptCount === 9)) {
+  window.showToast(`🔔 ${localPromptCount}/10 free prompts used. Sign in for unlimited access.`);
+}
+
+localStorage.setItem("promptCount", localPromptCount + 1);
+
+
     setLoading(true);
     setError(false);
 

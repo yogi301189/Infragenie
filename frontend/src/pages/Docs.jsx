@@ -16,7 +16,7 @@ export default function Docs() {
           <nav className="hidden md:flex items-center gap-6 text-slate-300">
             <a href="/#features" className="hover:text-white transition">Features</a>
             <a href="/docs" className="text-white border-b border-white">Docs</a>
-            <a href="https://github.com/yogi301189/infragenie" target="_blank" rel="noreferrer" className="hover:text-white">GitHub</a>
+            <a href="/docs" className="text-white border-b border-white">GitHub</a>
           </nav>
           <Button asChild className="ml-4 hidden md:inline-flex">
             <a href="/#prompt-section">Try it Now</a>
