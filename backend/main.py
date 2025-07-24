@@ -44,6 +44,9 @@ class ErrorCheckRequest(BaseModel):
     code: str
     type: str  # "kubernetes", "terraform", "dockerfile", or "python"
 
+class AWSPromptInput(BaseModel):
+    prompt: str
+
 # ---------- Main Routes ----------
 
 @app.post("/generate")
