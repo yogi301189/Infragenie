@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from openai_utils import (
     generate_k8s_yaml,
     generate_terraform_code,
-    generate_aws_command,
+    generate_aws_command,generate_aws_command_v2
     generate_dockerfile_code,
     _chat_with_openai, chat_with_context # Needed for explanation and error check
 )
@@ -108,6 +108,17 @@ async def chat_conversational(request_data: ChatRequest, request: Request):
     except Exception as e:
         print("❌ Chat failed:", e)
         return {"response": "❌ Error from OpenAI"}
+@app.post("/aws-generate-v2")
+async def aws_generate_v2(data: AWSPromptInput):
+    try:
+        result = await generate_aws_command_v2(data.prompt)
+        return result
+    except Exception as e:
+        return {
+            "code": "",
+            "explanation": f"Something went wrong: {str(e)}"
+        }
+
 @app.get("/debug")
 def debug():
     return {"routes": [route.path for route in app.routes]}

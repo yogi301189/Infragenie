@@ -114,3 +114,36 @@ async def chat_with_context(messages, code_type="kubernetes"):
         return response.choices[0].message.content.strip()
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"OpenAI API error: {str(e)}")
+
+
+async def generate_aws_command_v2(prompt: str) -> dict:
+    try:
+        raw = await _chat_with_openai(
+            system_msg=(
+                "You are an expert in AWS CLI. "
+                "Generate an AWS CLI command based on the given prompt. "
+                "Respond ONLY in this format:\n\n"
+                "Command:\n```bash\n<cli command>\n```\n\nExplanation:\n<brief explanation>\n\n"
+                "Do NOT include anything else in the output."
+            ),
+            prompt=prompt
+        )
+
+        # Extract command
+        code_match = re.search(r"```(?:bash)?\n(.+?)\n```", raw, re.DOTALL)
+        code = code_match.group(1).strip() if code_match else ""
+
+        # Extract explanation
+        explanation_match = re.search(r"Explanation:\s*(.+)", raw, re.DOTALL)
+        explanation = explanation_match.group(1).strip() if explanation_match else ""
+
+        return {
+            "code": code,
+            "explanation": explanation
+        }
+
+    except Exception as e:
+        return {
+            "code": "",
+            "explanation": f"Failed to generate AWS CLI command: {str(e)}\nRaw: {raw}"
+        }
