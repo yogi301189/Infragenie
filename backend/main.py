@@ -46,6 +46,7 @@ class ErrorCheckRequest(BaseModel):
 
 class AWSPromptInput(BaseModel):
     prompt: str
+    category: str = "General"
 
 # ---------- Main Routes ----------
 
