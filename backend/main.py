@@ -113,15 +113,14 @@ async def chat_conversational(request_data: ChatRequest, request: Request):
         print("❌ Chat failed:", e)
         return {"response": "❌ Error from OpenAI"}
 @app.post("/aws-generate-v2")
-async def aws_generate_v2(data: AWSPromptInput):
-    try:
-        result = await generate_aws_command_v2(data.prompt)
-        return result
-    except Exception as e:
-        return {
-            "code": "",
-            "explanation": f"Something went wrong: {str(e)}"
-        }
+async def aws_generate(request: AwsPrompt):
+    if not request.prompt.strip():
+        raise HTTPException(status_code=400, detail="Prompt is required")
+
+    # You can pass category if needed in future improvements
+    prompt_text = f"[{request.category}] {request.prompt}"
+    result = await generate_aws_command(prompt_text)
+    return JSONResponse(content=result)
 
 @app.get("/debug")
 def debug():
