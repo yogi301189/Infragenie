@@ -65,32 +65,40 @@ async def generate_dockerfile_code(prompt, mode="command"):
         explanation = raw.replace(f"```Dockerfile\n{code}\n```", "").strip()
         return code, explanation
 
-# ✅ AWS CLI handler
+# ✅ AWS CLI handler - Option 1: Use JSON array
 async def generate_aws_command(prompt):
     try:
         raw = await _chat_with_openai(
             system_msg=(
                 "You are an expert in AWS CLI. "
-                "Always return a JSON object with two fields: 'code' and 'explanation'. "
-                "Format multi-step commands in proper multiline syntax using backslashes (\\) for line continuation. "
-                "Avoid semicolons (;) unless required. Do NOT return markdown or code fences."
+                "Given a user prompt, return a JSON array where each item has two fields: 'code' and 'explanation'. "
+                "Each 'code' should be a step in a multi-line AWS CLI command (using backslashes for continuation). "
+                "Avoid markdown formatting or code fences. Only return a valid JSON array."
             ),
             prompt=prompt
         )
-        raw = re.sub(r'("\s*)("explanation")', r',\1\2', raw)
-        return json.loads(raw)
+
+        result_list = json.loads(raw)
+
+        # Combine all command steps into one multi-line command
+        full_command = "\n".join(item["code"] for item in result_list)
+        explanation = "\n\n".join(item["explanation"] for item in result_list)
+
+        return {
+            "code": full_command,
+            "explanation": explanation
+        }
+
     except json.JSONDecodeError as jde:
         return {
             "code": "",
             "explanation": f"Invalid JSON returned by OpenAI: {str(jde)}\nRaw: {raw}"
         }
     except Exception as e:
-        # logger.exception("AWS command generation failed")
         return {
             "code": "",
             "explanation": f"Failed to parse AWS response: {str(e)}"
         }
-
 # ✅ Chat-based contextual conversation
 async def chat_with_context(messages, code_type="kubernetes"):
     # 🧠 Extract the latest prompt
