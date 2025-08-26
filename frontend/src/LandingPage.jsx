@@ -42,15 +42,7 @@ export default function LandingPage() {
             <a href="/docs" className="hover:text-white transition">
               Docs
             </a>
-            <a
-              href="/docs"
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center gap-1 hover:text-white transition"
-            >
-              GitHub (Only for premium users)
-            </a>
-          </nav>
+            </nav>
           <div className="md:hidden">
   <button
     onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
