@@ -1,177 +1,268 @@
-// src/LandingPage.jsx
+import { useAuth } from "./context/AuthContext"; 
 import React, { useState } from "react";
-import { motion } from "framer-motion";
 import { Button } from "./components/ui/button";
+import { Card, CardContent } from "./components/ui/card";
+import { Copy, Maximize2, Minimize2 } from "lucide-react";
+import { motion } from "framer-motion";
 import { Container } from "./components/ui/container";
-import ErrorCheckCard from "./components/ErrorCheckCard";
-import HowToInstall from "./components/HowToInstallCard";
-import Features from "./pages/Features";
+import { Link as ScrollLink, animateScroll as scroll } from "react-scroll";
+import WhyChoose from "./components/WhyChoose";
+import AwsCard from "./components/AwsCard";
 import PromptForm from "./PromptForm";
-import { Menu, X } from "lucide-react";
+import HowToInstallCard from "./components/HowToInstallCard";
+import SeeInActionModal from "./components/SeeInActionModal";
+import ErrorCheckCard from "./components/ErrorCheckCard";
+import { Link as RouterLink } from "react-router-dom";
+import FeedbackForm from "./components/FeedbackForm";
 
 export default function LandingPage() {
+  const { user, logout } = useAuth();
+  const [showMenu, setShowMenu] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isFullScreen, setIsFullScreen] = useState(false);
+
 
   return (
-    <div className="bg-[#0a0a12] text-white min-h-screen flex flex-col">
-      {/* Navbar */}
-      <nav className="fixed top-0 w-full bg-[#0a0a12]/80 backdrop-blur-lg z-50 border-b border-slate-800">
-        <Container className="flex justify-between items-center py-4">
-          {/* Logo */}
-          <a href="/" className="text-xl font-bold tracking-wide">
-            Infra<span className="text-green-400">Genie</span>
-          </a>
-
-          {/* Desktop Links */}
-          <div className="hidden md:flex space-x-8 items-center">
-            <a href="#features" className="hover:text-green-400 transition">Features</a>
-            <a href="#docs" className="hover:text-green-400 transition">Docs</a>
-            <Button
-              className="rounded-xl font-semibold bg-gradient-to-r from-green-400 to-blue-500 text-white px-5 py-2 shadow-md hover:opacity-90"
-            >
-              Signup / Signin
-            </Button>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <div className="md:hidden">
-            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
-        </Container>
-
-        {/* Mobile Dropdown */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden bg-[#0f0f1a] border-t border-slate-800">
-            <div className="flex flex-col p-4 space-y-4">
-              <a href="#features" className="hover:text-green-400">Features</a>
-              <a href="#docs" className="hover:text-green-400">Docs</a>
-              <Button className="rounded-xl font-semibold bg-gradient-to-r from-green-400 to-blue-500 text-white px-5 py-2 shadow-md">
-                Signup / Signin
-              </Button>
-            </div>
-          </div>
-        )}
-      </nav>
-
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-20">
-        <Container className="grid md:grid-cols-2 gap-12 items-center">
-          {/* Left */}
-          <div>
-            <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6">
-              Automate Cloud Infra with{" "}
-              <span className="text-green-400">AI Power</span>
-            </h1>
-            <p className="text-lg text-slate-300 mb-6">
-              Generate Kubernetes, Terraform, Dockerfiles, and AWS CLI commands instantly.
-              InfraGenie saves hours of DevOps work with one prompt.
-            </p>
-            <div className="flex space-x-4">
-              <Button className="rounded-xl font-semibold bg-gradient-to-r from-green-400 to-blue-500 text-white px-6 py-3 shadow-lg hover:opacity-90">
-                See in Action
-              </Button>
-              <Button
-                variant="outline"
-                className="rounded-xl border border-green-400 text-green-400 hover:bg-green-400/10 px-6 py-3"
-              >
-                Docs
-              </Button>
-            </div>
-          </div>
-
-          {/* Right - Mock Terminal */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="bg-[#0f0f1a] border border-slate-700 rounded-xl shadow-lg p-6 font-mono text-sm text-green-300"
+    <div className="min-h-screen flex flex-col bg-[#0a0a12] text-white scroll-smooth">
+      {/* Header */}
+      <header className="sticky top-0 z-30 backdrop-blur supports-[backdrop-filter]:bg-slate-900/70 border-b border-slate-800">
+        <Container className="flex items-center justify-between py-4">
+          <button
+            onClick={() => scroll.scrollToTop()}
+            className="flex items-center gap-2 text-lg font-semibold cursor-pointer"
           >
-            <p className="text-slate-400 mb-2"># Terraform Example</p>
-            <pre>{`resource "aws_s3_bucket" "example" {
-  bucket = "my-ai-bucket"
-  acl    = "private"
-}`}</pre>
-          </motion.div>
-        </Container>
-      </section>
+            <img src="/logo.svg" alt="logo" className="h-12 w-12" /> 
+            <span className="text-3xl font-semibold bg-gradient-to-r from-blue-400 to-emerald-500 text-transparent bg-clip-text">Infragenie</span>
+                     </button>
+          {/* Navbar Links */}
+<nav className="hidden md:flex items-center gap-6 text-slate-300">
+  <a
+    href="/features"
+    className="relative hover:text-white transition after:content-[''] after:absolute after:left-0 after:bottom-[-4px] after:w-0 after:h-[2px] after:bg-gradient-to-r after:from-blue-400 after:to-purple-500 after:transition-all after:duration-300 hover:after:w-full"
+  >
+    Features
+  </a>
+  <a
+    href="/docs"
+    className="relative hover:text-white transition after:content-[''] after:absolute after:left-0 after:bottom-[-4px] after:w-0 after:h-[2px] after:bg-gradient-to-r after:from-blue-400 after:to-purple-500 after:transition-all after:duration-300 hover:after:w-full"
+  >
+    Docs
+  </a>
+</nav>
 
-      {/* Error Check Section */}
-      <ErrorCheckCard />
+{/* Signup/Signin button */}
+{!user && (
+  <Button
+    asChild
+    className="ml-4 hidden md:inline-flex rounded-xl font-semibold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 text-white shadow-lg transition-all"
+  >
+    <RouterLink to="/login" className="gap-2 cursor-pointer">
+      Signup / Signin
+    </RouterLink>
+  </Button>
+)}
 
-      {/* How to Install Section */}
-      <HowToInstall />
+          <div className="md:hidden">
+  <button
+    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+    className="text-white focus:outline-none"
+  >
+    ☰
+  </button>
+</div>
 
-      {/* Features */}
-      <section id="features">
-        <Features />
-      </section>
+{/* Mobile Dropdown Menu */}
+{showMenu && (
+  <div className="md:hidden flex flex-col gap-2 mt-2 text-slate-300">
+    <a href="/features" className="hover:text-white transition">Features</a>
+    <a href="/docs" className="hover:text-white transition">Docs</a>
+    <a href="/docs" target="_blank" rel="noreferrer" className="hover:text-white transition">
+      GitHub (Premium)
+    </a>
+   </div>
+)}
 
-      {/* Playground Section */}
-      <section id="playground" className="py-20 bg-[#0f0f1a] border-t border-slate-800">
-        <Container>
-          <h2 className="text-3xl font-bold mb-8 text-center">⚡ Try InfraGenie</h2>
-          <p className="text-slate-400 mb-6 text-center">
-            Enter a prompt and generate infra code instantly.
-          </p>
-          <PromptForm />
-        </Container>
-      </section>
-
-      {/* Testimonials */}
-      <section className="py-20">
-        <Container>
-          <h2 className="text-3xl font-bold mb-8 text-center">Loved by DevOps Teams</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                quote: "InfraGenie saved me hours setting up Kubernetes configs.",
-                author: "DevOps Engineer",
-              },
-              {
-                quote: "As a Cloud Architect, I use it daily for Terraform and AWS CLI generation.",
-                author: "Cloud Architect",
-              },
-              {
-                quote: "Perfect tool for our startup — accelerated deployments massively.",
-                author: "Startup Founder",
-              },
-            ].map((t, i) => (
-              <div
-                key={i}
-                className="bg-[#0f0f1a] p-6 rounded-xl border border-slate-700 shadow-md"
+          {user ? (
+            <div className="relative">
+              <button
+                className="text-white hover:text-indigo-400"
+                onClick={() => setShowMenu(!showMenu)}
               >
-                <p className="italic text-slate-300 mb-4">“{t.quote}”</p>
-                <p className="text-green-400 font-semibold">{t.author}</p>
-              </div>
-            ))}
+                👤 Welcome {user.email.split("@")[0]} ▼
+              </button>
+              {showMenu && (
+                <div className="absolute right-0 mt-2 bg-slate-800 shadow-lg rounded-md p-2 z-50">
+                  <button
+                    onClick={() => {
+                      logout();
+                      setShowMenu(false);
+                    }}
+                    className="text-red-400 hover:text-red-300 text-sm px-4 py-2"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Button asChild className="ml-4 hidden md:inline-flex">
+              <RouterLink to="/login" className="gap-2 cursor-pointer">
+                Signup / Signin
+              </RouterLink>
+            </Button>
+          )}
+        </Container>
+      </header>
+      {isMobileMenuOpen && (
+  <div className="md:hidden bg-slate-900 px-6 py-4 space-y-4 text-slate-300 border-b border-slate-700">
+    <a href="/features" className="block hover:text-white">Features</a>
+    <a href="/docs" className="block hover:text-white">Docs</a>
+    <a href="/docs" className="block hover:text-white">GitHub (Premium)</a>
+    <RouterLink to="/login" className="block hover:text-white">Signup / Signin</RouterLink>
+  </div>
+)}
+      {/* Hero Section */}
+      <section id="hero" className="flex-1 py-12 md:py-20">
+        <Container className="grid md:grid-cols-2 gap-12 items-center px-4">
+
+          {/* Left */}
+          <div className="space-y-6 max-w-xl">
+            <motion.h1
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="text-4xl md:text-5xl font-extrabold leading-tight"
+            >
+              Ship Infrastructure
+              <br />
+              <span className="bg-gradient-to-r from-emerald-400 to-purple-500 text-transparent bg-clip-text">
+                10× Faster
+              </span>
+              <br /> with AI
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-slate-400"
+            >
+              Infragenie turns natural language prompts into production-grade Kubernetes, Terraform & Docker code.
+            </motion.p>
+            <div className="flex flex-wrap gap-4">
+              <ScrollLink
+                to="how-to-install"
+                smooth={true}
+                duration={500}
+                offset={-60}
+                className="cursor-pointer"
+              >
+                <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">
+                  Try the Demo
+                </Button>
+              </ScrollLink>
+              <Button onClick={() => setShowModal(true)}>See in Action</Button>
+              <SeeInActionModal open={showModal} onClose={() => setShowModal(false)} />
+            </div>
           </div>
+          {/* Prompt Form Section */}
+          {/* Prompt Form Section */}
+<section id="prompt" className={`py-12 md:py-20 px-4 bg-[#0f0f1a] border-y border-slate-800 ${isFullScreen ? 'fixed inset-0 z-50 bg-[#0f0f1a] overflow-auto' : ''}`}>
+  <Container>
+    <div className="flex justify-between items-center mb-4">
+      <h2 className="text-xl font-bold text-white">Start Typing. Genie is listening...</h2>
+      <button
+        className="bg-slate-800 text-sm text-white px-3 py-1 rounded hover:bg-slate-700"
+        onClick={() => setIsFullScreen(prev => !prev)}
+      >
+        {isFullScreen ? "Exit Full Screen" : "Full Screen"}
+      </button>
+    </div>
+    <PromptForm />
+  </Container>
+</section>
+
+
+
+          {/* Right - Code Preview */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+          ></motion.div>
         </Container>
       </section>
 
-      {/* Final CTA */}
-      <section className="py-20 bg-gradient-to-r from-green-500/10 to-blue-500/10 border-t border-slate-800">
-        <Container className="text-center">
-          <h2 className="text-4xl font-bold mb-6">🚀 Get Started with InfraGenie</h2>
-          <p className="text-slate-400 mb-8">
-            Boost your DevOps workflow with AI-powered infra generation.
+      <section id="ErrorCheckCard" className="py-12 px-4 sm:px-6 lg:px-12 bg-transparent overflow-x-hidden">
+  <div className="max-w-7xl mx-auto">
+    <h2 className="text-2xl font-bold text-white mb-6 px-4">
+          </h2>
+    <div className="px-4">
+      <ErrorCheckCard />
+    </div>
+  </div>
+</section>
+
+
+      <section id="how-to-install" className="py-12 px-4 sm:px-6 lg:px-12 bg-transparent">
+        <div className="max-w-7xl mx-auto px-4">
+          <h2 className="text-2xl font-bold text-white mb-6">Get Started Quickly</h2>
+          <div className="flex flex-col lg:flex-row gap-6 justify-center items-start">
+            <AwsCard />
+            <HowToInstallCard />
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section id="features" className="py-24 md:py-32">
+        <Container>
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
+            Why Choose Infragenie?
+          </h2>
+          <WhyChoose />
+        </Container>
+      </section>
+
+      {/* CTA */}
+      <section id="get-started" className="py-24 md:py-32 text-center px-4">
+        <Container>
+          <h2 className="text-3xl sm:text-3xl md:text-4xl font-bold mb-6">Ready to automate your infra?</h2>
+          <p className="text-slate-300 sm:text-lg mb-8 max-w-xl mx-auto">
+            Start generating secure, production‑ready manifests in seconds.
           </p>
-          <Button className="rounded-xl font-semibold bg-gradient-to-r from-green-400 to-blue-500 text-white px-8 py-4 shadow-lg hover:opacity-90">
-            Signup Now
-          </Button>
+          <Button size="lg" className="text-lg px-8 py-6">Get Started Now</Button>
         </Container>
       </section>
 
+      <section className="py-20 bg-slate-800 border-t border-slate-700 text-center">
+        <Container>
+          <motion.h2
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-3xl md:text-4xl font-bold mb-10 text-white"
+          >
+            Loved by 100+ DevOps Engineers
+          </motion.h2>
+          <motion.blockquote
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="max-w-3xl mx-auto text-lg text-slate-300 italic"
+          >
+            “InfraGenie saves me hours every deployment. Just type the intent and it does the heavy lifting.”
+            <footer className="mt-4 text-sm not-italic text-slate-400">— MohanPrasad, Senior SRE @ Capgemini</footer>
+          </motion.blockquote>
+        </Container>
+      </section>
+      <FeedbackForm />
       {/* Footer */}
-      <footer className="py-8 bg-[#0a0a12] border-t border-slate-800">
-        <Container className="flex flex-col md:flex-row justify-between items-center text-slate-400">
-          <p>© {new Date().getFullYear()} InfraGenie. All rights reserved.</p>
-          <div className="flex space-x-6 mt-4 md:mt-0">
-            <a href="#features" className="hover:text-green-400">Features</a>
-            <a href="#docs" className="hover:text-green-400">Docs</a>
-            <a href="https://github.com" className="hover:text-green-400">GitHub</a>
-          </div>
+      <footer className="border-t border-slate-700 py-8 bg-slate-900 text-slate-400 text-center text-sm px-4">
+        <Container>
+          <p>© {new Date().getFullYear()} Infragenie. All rights reserved.</p>
         </Container>
       </footer>
     </div>
