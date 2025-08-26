@@ -1,12 +1,12 @@
 // src/pages/LandingPage.jsx
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Container } from "@/components/ui/container";
-import ErrorCheckCard from "@/components/ErrorCheckCard";
-import HowToInstall from "@/components/HowToInstall";
-import Features from "@/pages/Features";
-import PromptForm from "@/components/PromptForm";
+import { Button } from "./components/ui/button";
+import { Container } from "./components/ui/container";
+import ErrorCheckCard from "./components/ErrorCheckCard";
+import HowToInstall from "./components/HowToInstall";
+import Features from "./pages/Features";
+import PromptForm from "./components/PromptForm";
 import { Menu, X } from "lucide-react";
 
 export default function LandingPage() {
