@@ -34,19 +34,29 @@ export default function Features() {
 
   return (
     <div className="min-h-screen bg-[#0a0a12] text-white">
-      <Container className="py-20 max-w-4xl">
-        <h1 className="text-4xl font-bold mb-8">🚀 Features</h1>
-        <div className="space-y-8">
+      <Container className="py-20 max-w-5xl">
+        {/* Section Heading */}
+        <h1 className="text-4xl font-bold mb-4 text-center">🚀 Features</h1>
+        <p className="text-slate-400 text-lg mb-12 text-center">
+          Why InfraGenie is the ultimate AI DevOps copilot.
+        </p>
+
+        {/* Features Grid */}
+        <div className="grid gap-8 md:grid-cols-2">
           {features.map((feature, i) => (
             <div
               key={i}
-              className="bg-[#0f0f1a] p-6 rounded-xl border border-slate-700 shadow-md"
+              className="bg-[#0f0f1a] p-6 rounded-2xl border border-slate-800 
+                         hover:border-purple-500/50 hover:shadow-purple-500/10 
+                         transition transform hover:-translate-y-1"
             >
-              <h2 className="text-xl font-semibold flex items-center gap-2 mb-2">
-                <CheckCircle size={18} className="text-green-400" />
+              <h2 className="text-2xl font-semibold flex items-center gap-3 mb-3">
+                <CheckCircle size={22} className="text-green-400" />
                 {feature.title}
               </h2>
-              <p className="text-slate-300 leading-relaxed">{feature.description}</p>
+              <p className="text-slate-300 leading-relaxed">
+                {feature.description}
+              </p>
             </div>
           ))}
         </div>
