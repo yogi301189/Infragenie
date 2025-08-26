@@ -6,7 +6,7 @@ import { Container } from "./components/ui/container";
 import ErrorCheckCard from "./components/ErrorCheckCard";
 import HowToInstall from "./components/HowToInstallCard";
 import Features from "./pages/Features";
-import PromptForm from "./components/PromptForm";
+import PromptForm from "./PromptForm";
 import { Menu, X } from "lucide-react";
 
 export default function LandingPage() {
