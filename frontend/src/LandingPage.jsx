@@ -80,12 +80,7 @@ export default function LandingPage() {
     <a href="/docs" target="_blank" rel="noreferrer" className="hover:text-white transition">
       GitHub (Premium)
     </a>
-    {!user && (
-      <RouterLink to="/login" className="text-white mt-2 underline">
-        Signup / Signin
-      </RouterLink>
-    )}
-  </div>
+   </div>
 )}
 
           {user ? (
