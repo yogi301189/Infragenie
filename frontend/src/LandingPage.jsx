@@ -49,7 +49,6 @@ export default function LandingPage() {
   >
     Docs
   </a>
-</nav>
 
 {/* Signup/Signin button */}
 {!user && (
@@ -62,6 +61,7 @@ export default function LandingPage() {
     </RouterLink>
   </Button>
 )}
+</nav>
 
           <div className="md:hidden">
   <button
