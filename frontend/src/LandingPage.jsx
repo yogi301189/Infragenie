@@ -58,7 +58,7 @@ export default function LandingPage() {
     className="ml-4 hidden md:inline-flex rounded-xl font-semibold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 text-white shadow-lg transition-all"
   >
     <RouterLink to="/login" className="gap-2 cursor-pointer">
-      Signup / Signin
+      Pricing
     </RouterLink>
   </Button>
 )}
