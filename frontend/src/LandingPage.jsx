@@ -35,14 +35,34 @@ export default function LandingPage() {
             <img src="/logo.svg" alt="logo" className="h-12 w-12" /> 
             <span className="text-3xl font-semibold bg-gradient-to-r from-blue-400 to-emerald-500 text-transparent bg-clip-text">Infragenie</span>
                      </button>
-          <nav className="hidden md:flex items-center gap-6 text-slate-300">
-            <a href="/features" className="hover:text-white transition">
-              Features
-            </a>
-            <a href="/docs" className="hover:text-white transition">
-              Docs
-            </a>
-            </nav>
+          {/* Navbar Links */}
+<nav className="hidden md:flex items-center gap-6 text-slate-300">
+  <a
+    href="/features"
+    className="relative hover:text-white transition after:content-[''] after:absolute after:left-0 after:bottom-[-4px] after:w-0 after:h-[2px] after:bg-gradient-to-r after:from-blue-400 after:to-purple-500 after:transition-all after:duration-300 hover:after:w-full"
+  >
+    Features
+  </a>
+  <a
+    href="/docs"
+    className="relative hover:text-white transition after:content-[''] after:absolute after:left-0 after:bottom-[-4px] after:w-0 after:h-[2px] after:bg-gradient-to-r after:from-blue-400 after:to-purple-500 after:transition-all after:duration-300 hover:after:w-full"
+  >
+    Docs
+  </a>
+</nav>
+
+{/* Signup/Signin button */}
+{!user && (
+  <Button
+    asChild
+    className="ml-4 hidden md:inline-flex rounded-xl font-semibold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 text-white shadow-lg transition-all"
+  >
+    <RouterLink to="/login" className="gap-2 cursor-pointer">
+      Signup / Signin
+    </RouterLink>
+  </Button>
+)}
+
           <div className="md:hidden">
   <button
     onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
