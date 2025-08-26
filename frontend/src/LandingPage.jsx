@@ -166,19 +166,39 @@ export default function LandingPage() {
             </div>
           </div>
           {/* Prompt Form Section */}
-          {/* Prompt Form Section */}
-<section id="prompt" className={`py-12 md:py-20 px-4 bg-[#0f0f1a] border-y border-slate-800 ${isFullScreen ? 'fixed inset-0 z-50 bg-[#0f0f1a] overflow-auto' : ''}`}>
+         {/* Prompt Form Section */}
+<section
+  id="prompt"
+  className={`py-12 md:py-20 px-4 bg-[#0f0f1a] border-y border-slate-800 ${
+    isFullScreen ? "fixed inset-0 z-50 bg-[#0f0f1a] overflow-auto" : ""
+  }`}
+>
   <Container>
-    <div className="flex justify-between items-center mb-4">
-      <h2 className="text-xl font-bold text-white">Start Typing. Genie is listening...</h2>
+    <div className="flex justify-between items-center mb-6">
+      <h2 className="text-xl font-bold text-white">
+        Start Typing. Genie is listening...
+      </h2>
       <button
-        className="bg-slate-800 text-sm text-white px-3 py-1 rounded hover:bg-slate-700"
-        onClick={() => setIsFullScreen(prev => !prev)}
+        className="px-3 py-1 text-sm rounded-xl 
+        bg-gradient-to-r from-purple-600 to-cyan-500 
+        text-white shadow-md hover:shadow-lg 
+        hover:scale-[1.05] transition"
+        onClick={() => setIsFullScreen((prev) => !prev)}
       >
         {isFullScreen ? "Exit Full Screen" : "Full Screen"}
       </button>
     </div>
-    <PromptForm />
+
+    {/* Polished Prompt Form Wrapper */}
+    <div
+      className="w-full max-w-2xl mx-auto rounded-2xl p-6
+      bg-black/40 backdrop-blur-md 
+      border border-transparent 
+      bg-gradient-to-br from-white/10 to-white/5 
+      shadow-xl"
+    >
+      <PromptForm />
+    </div>
   </Container>
 </section>
 
