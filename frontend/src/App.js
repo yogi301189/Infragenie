@@ -9,6 +9,7 @@ import Signup from "./pages/Signup";
 import { AuthProvider } from "./context/AuthContext";
 import Features from "./pages/Features";
 import PromptHistory from "./components/PromptHistory";
+import PricingPage from "./pages/PricingPage";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
 <Route path="/login" element={<Login />} />
 <Route path="/signup" element={<Signup />} />
 <Route path="/history" element={<PromptHistory />} />
+<Route path="/pricing" element={<PricingPage />} />
 
       </Routes>
     </Router>
